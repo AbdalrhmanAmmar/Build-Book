@@ -25,31 +25,31 @@ export const RenderBookList:Ibooks[] = BooksList.map((book) => ({
 export const Formdata:IForms[] = [
   {
     id: "Title",
-    name: "Title",
+    name: "title",
     placeholder: "Title",
     type: "text",
   },
   {
     id: "Author",
-    name: "Author",
+    name: "author",
     placeholder: "Author",
     type: "text",
   },
     {
     id: "Link",
-    name: "Link",
+    name: "link",
     placeholder: "Link",
     type: "text",
   },
     {
     id: "Description",
-    name: "Description",
+    name: "description",
     placeholder: "Description",
     type: "textarea",
   },
   {
     id: "Country",
-    name: "Country",
+    name: "country",
     placeholder: "Country",
     type: "text",
   },
@@ -58,28 +58,34 @@ export const Formdata:IForms[] = [
 
   {
     id: "Pages",
-    name: "Pages",
+    name: "pages",
     placeholder: "Pages",
     type: "number",
   },
   {
     id: "Year",
-    name: "Year",
+    name: "year",
     placeholder: "Year",
     type: "number",
   },
     {
     id: "Language",
-    name: "Language",
+    name: "language",
     placeholder: "Language",
     type: "text",
   },
 
   {
     id: "Category",
-    name: "Category",
+    name: "category",
     placeholder: "Category",
     type: "text",
+  },
+  {
+    id: "imageLink",
+    name: "imageLink",
+    placeholder: "imageLink",
+    type: "file",
   },
 ];
 

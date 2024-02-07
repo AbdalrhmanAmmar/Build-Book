@@ -2,7 +2,7 @@ export interface Ibooks  {
     id: string;
     author: string,
     country: string,
-    imageLink: string,
+    imageLink?: string | File | null
     language: string,
     link: string,
     pages: number,
@@ -17,6 +17,6 @@ export interface Ibooks  {
 export interface IForms{
     id: string,
     type: string,
-    name: string,
+    name: "author"|"country"|"imageLink"|"language"|"link"|"pages"|"title"|"year"|"description"|"category"
     placeholder: string,
 }
