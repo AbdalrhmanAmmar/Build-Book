@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import notFound from "../../public/Image_notfoud.png";
+import notFound from "/Image_notfoud.png";
 import { cn } from "../../Lists/Utlites";
 
 interface Iprops extends VariantProps<typeof ImageVariants> {
