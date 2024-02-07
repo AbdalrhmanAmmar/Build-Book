@@ -35,30 +35,27 @@ export const Formdata:IForms[] = [
     placeholder: "Author",
     type: "text",
   },
+    {
+    id: "Link",
+    name: "Link",
+    placeholder: "Link",
+    type: "text",
+  },
+    {
+    id: "Description",
+    name: "Description",
+    placeholder: "Description",
+    type: "textarea",
+  },
   {
     id: "Country",
     name: "Country",
     placeholder: "Country",
     type: "text",
   },
-  {
-    id: "ImageLink",
-    name: "Image Link",
-    placeholder: "Image Link",
-    type: "text",
-  },
-  {
-    id: "Language",
-    name: "Language",
-    placeholder: "Language",
-    type: "text",
-  },
-  {
-    id: "Link",
-    name: "Link",
-    placeholder: "Link",
-    type: "text",
-  },
+
+
+
   {
     id: "Pages",
     name: "Pages",
@@ -71,12 +68,13 @@ export const Formdata:IForms[] = [
     placeholder: "Year",
     type: "number",
   },
-  {
-    id: "Description",
-    name: "Description",
-    placeholder: "Description",
-    type: "textarea",
+    {
+    id: "Language",
+    name: "Language",
+    placeholder: "Language",
+    type: "text",
   },
+
   {
     id: "Category",
     name: "Category",
