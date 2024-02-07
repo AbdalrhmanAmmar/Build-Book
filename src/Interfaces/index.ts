@@ -11,3 +11,12 @@ export interface Ibooks  {
     description: string,
     category:string,
 }
+
+
+
+export interface IForms{
+    id: string,
+    type: string,
+    name: string,
+    placeholder: string,
+}
