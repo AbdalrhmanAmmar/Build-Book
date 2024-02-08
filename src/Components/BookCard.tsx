@@ -4,9 +4,11 @@ import Button from "./UI_Shared/Button";
 
 interface Iprops {
   books: Ibooks;
+  onDeleteHandler: (id:string) => void;
 }
-function BookCard({ books }: Iprops) {
+function BookCard({ books, onDeleteHandler }: Iprops) {
   const {
+    id,
     author,
     country,
     imageLink,
@@ -69,7 +71,9 @@ function BookCard({ books }: Iprops) {
                 More Info
               </Button>
               <Button className="">Edit</Button>
-              <Button Color="red">Delete</Button>
+              <Button Color="red" onClick={() => onDeleteHandler(id)}>
+                Delete
+              </Button>
             </div>
           </div>
         </div>

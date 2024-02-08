@@ -6,10 +6,10 @@ import Button from "./Components/UI_Shared/Button";
 import Modal from "./Components/UI_Shared/Modal";
 import Input from "./Components/UI_Shared/Input";
 import Label from "./Components/UI_Shared/Label";
-import { FaBook } from "react-icons/fa";
 import Category from "./Components/UI_Shared/Category";
 import { Ibooks } from "./Interfaces/index";
 import { v4 as uuid } from "uuid";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   //State
@@ -17,7 +17,7 @@ function App() {
     id: "",
     author: "",
     country: "",
-    imageLink: null,
+    imageLink: "",
     language: "",
     link: "",
     pages: 0,
@@ -28,9 +28,8 @@ function App() {
   };
   const [Book, setBook] = useState<Ibooks>(defaultProductObj);
   const [ListBookItem, setListBookItem] = useState<Ibooks[]>(RenderBookList);
-
   const [isOpen, setIsOpen] = useState(false);
-  const [Bookcover, setBookcover] = useState<File | null>();
+  const [Bookcover, setBookcover] = useState<File | undefined>();
 
   //Function
   console.log(Book);
@@ -50,6 +49,13 @@ function App() {
     setBook(defaultProductObj);
     closeModal();
     console.log(Book);
+
+    toast.success("Successfully toasted!");
+  };
+
+  const onDeleteHandler = (id: string) => {
+    const filteredBook = ListBookItem.filter((book) => book.id !== id);
+    setListBookItem(filteredBook);
   };
 
   function closeModal() {
@@ -68,14 +74,14 @@ function App() {
   }
 
   function DeleteImg() {
-    setBookcover(null);
+    setBookcover(undefined);
   }
   // const RenderProduct = productList.map((products) => (
   //   <ProductCard key={products.id} product={products} />
   // ));
   //Render Date by Maping
   const RenderBookItems = ListBookItem.map((books) => (
-    <BookCard key={books.id} books={books}  />
+    <BookCard key={books.id} books={books} onDeleteHandler={onDeleteHandler} />
   ));
 
   //RenderForms
@@ -129,6 +135,7 @@ function App() {
 
   return (
     <>
+      <Toaster position="top-right" reverseOrder={false} />
       <Navbar />
       <div className="w-[100%]">
         <div className="container mx-auto ">
