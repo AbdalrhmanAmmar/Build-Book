@@ -10,6 +10,8 @@ import Category from "./Components/UI_Shared/Category";
 import { Ibooks } from "./Interfaces/index";
 import { v4 as uuid } from "uuid";
 import toast, { Toaster } from "react-hot-toast";
+import DeletedItemModal from "./Components/UI_Shared/DeletedItemModal";
+import DeletedBooks from "./Components/DeletedBook/deletedBooks";
 
 function App() {
   //State
@@ -29,7 +31,10 @@ function App() {
   const [Book, setBook] = useState<Ibooks>(defaultProductObj);
   const [ListBookItem, setListBookItem] = useState<Ibooks[]>(RenderBookList);
   const [isOpen, setIsOpen] = useState(false);
+  const [isdeletedItemopen, setIsdeletedItemopen] = useState(false);
   const [Bookcover, setBookcover] = useState<File | undefined>();
+  const [DeleteCounter, setDeleteCounter] = useState<number>(0);
+  const [FaTrashItem, setFaTrashItem] = useState<Ibooks[]>([]);
 
   //Function
   console.log(Book);
@@ -56,14 +61,25 @@ function App() {
   const onDeleteHandler = (id: string) => {
     const filteredBook = ListBookItem.filter((book) => book.id !== id);
     setListBookItem(filteredBook);
+    setDeleteCounter((prevCounter) => prevCounter + 1);
+    ShowdeletedItem(id);
+  };
+
+  const ShowdeletedItem = (id: string) => {
+    const filteredBook = ListBookItem.filter((book) => book.id === id);
+    setFaTrashItem((prev) => prev.concat(filteredBook));
   };
 
   function closeModal() {
     setIsOpen(false);
+    setIsdeletedItemopen(false);
   }
 
   function openModal() {
     setIsOpen(true);
+  }
+  function openDeletedModal() {
+    setIsdeletedItemopen(true);
   }
 
   function UploadImg(e: ChangeEvent<HTMLInputElement>) {
@@ -120,23 +136,18 @@ function App() {
     </div>
   ));
 
-  // const remainingInputs = Formdata.slice(2, 4).map((input) => (
-  //   <div className="flex flex-col my-2" key={input.id}>
-  //     <label htmlFor="">{input.name}</label>
-  //     <Input type="text" id={input.id} />
-  //   </div>
-  // ));
-  // const LastInputs = Formdata.slice(4, 8).map((input) => (
-  //   <div className="flex flex-col my-2" key={input.id}>
-  //     <label htmlFor="">{input.name}</label>
-  //     <Input type="text" id={input.id} />
-  //   </div>
-  // ));
+  const deletedBookmark = FaTrashItem.map((deletedBook) => (
+    <DeletedBooks key={deletedBook.id} deletedBook={deletedBook} />
+  ));
 
   return (
     <>
       <Toaster position="top-right" reverseOrder={false} />
-      <Navbar />
+      <Navbar
+        DeleteCounter={DeleteCounter}
+        openDeletedModal={openDeletedModal}
+      />
+
       <div className="w-[100%]">
         <div className="container mx-auto ">
           <div className="flex justify-between my-4 items-center gap-4 md:w-full ">
@@ -225,6 +236,13 @@ function App() {
               </div>
             </form>
           </Modal>
+          <DeletedItemModal
+            isdeletedItemopen={isdeletedItemopen}
+            closeModal={closeModal}
+          >
+            HELLO
+            {deletedBookmark}
+          </DeletedItemModal>
         </div>
       </div>
     </>

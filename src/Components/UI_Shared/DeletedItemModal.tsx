@@ -1,16 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
 
-interface IProps {
-  isOpen: boolean;
+interface Iprops {
+  isdeletedItemopen: boolean;
   closeModal: () => void;
-  children: ReactNode;
+    children: ReactNode;
 }
 
-export default function Modal({ isOpen, closeModal, children, }: IProps) {
+function DeletedItemModal({ isdeletedItemopen, closeModal, children }: Iprops) {
   return (
-    <>
-      <Transition appear show={isOpen} as={Fragment} >
+    <div>
+      <Transition appear show={isdeletedItemopen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -49,6 +49,8 @@ export default function Modal({ isOpen, closeModal, children, }: IProps) {
           </div>
         </Dialog>
       </Transition>
-    </>
+    </div>
   );
 }
+
+export default DeletedItemModal;
