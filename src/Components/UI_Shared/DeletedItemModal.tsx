@@ -4,7 +4,7 @@ import { Fragment, ReactNode } from "react";
 interface Iprops {
   isdeletedItemopen: boolean;
   closeModal: () => void;
-    children: ReactNode;
+  children: ReactNode;
 }
 
 function DeletedItemModal({ isdeletedItemopen, closeModal, children }: Iprops) {
@@ -35,12 +35,12 @@ function DeletedItemModal({ isdeletedItemopen, closeModal, children }: Iprops) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className=" transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Add Your Book
+                    <h2 className="text-red-500">Your Deleted Book</h2>
                   </Dialog.Title>
                   <div className="mt-4">{children}</div>
                 </Dialog.Panel>

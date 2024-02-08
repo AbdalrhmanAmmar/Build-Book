@@ -70,6 +70,20 @@ function App() {
     setFaTrashItem((prev) => prev.concat(filteredBook));
   };
 
+  const Recover_deleted_books = () => {
+    setDeleteCounter(0);
+    setListBookItem((prev) => [...FaTrashItem, ...prev]);
+    setFaTrashItem([]);
+  };
+
+  const Retrieve_this_item = (id: string) => {
+    const FilterFaTrashItem = FaTrashItem.filter((item) => item.id !== id);
+    const FilterFaTrashItemBack = FaTrashItem.filter((item) => item.id === id);
+    setFaTrashItem(FilterFaTrashItem);
+    setListBookItem((prev) => [...FilterFaTrashItemBack, ...prev]);
+    setDeleteCounter((prevCounter) => prevCounter - 1);
+  };
+
   function closeModal() {
     setIsOpen(false);
     setIsdeletedItemopen(false);
@@ -137,7 +151,11 @@ function App() {
   ));
 
   const deletedBookmark = FaTrashItem.map((deletedBook) => (
-    <DeletedBooks key={deletedBook.id} deletedBook={deletedBook} />
+    <DeletedBooks
+      key={deletedBook.id}
+      deletedBook={deletedBook}
+      Retrieve_this_item={Retrieve_this_item}
+    />
   ));
 
   return (
@@ -240,8 +258,18 @@ function App() {
             isdeletedItemopen={isdeletedItemopen}
             closeModal={closeModal}
           >
-            HELLO
-            {deletedBookmark}
+            <div className="flex flex-col justify-between">
+              <div className="grid grid-cols-4 gap-3 my-3 ">
+                {deletedBookmark}
+              </div>
+              <Button
+                Color='red'
+                onClick={() => Recover_deleted_books()}
+                className="w-[60%] justify-center m-auto"
+              >
+                Recover deleted books
+              </Button>
+            </div>
           </DeletedItemModal>
         </div>
       </div>
