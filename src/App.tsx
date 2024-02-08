@@ -11,7 +11,7 @@ import { Ibooks } from "./Interfaces/index";
 import { v4 as uuid } from "uuid";
 import toast, { Toaster } from "react-hot-toast";
 import DeletedItemModal from "./Components/UI_Shared/DeletedItemModal";
-import DeletedBooks from "./Components/DeletedBook/deletedBooks";
+import DeletedBooks from "./Components/DeletedBook/DeletedBooks";
 
 function App() {
   //State

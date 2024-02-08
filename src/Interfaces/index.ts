@@ -2,7 +2,7 @@ export interface Ibooks  {
     id: string;
     author: string,
     country: string,
-    imageLink?: string | File 
+    imageLink?: string | File | undefined
     language: string,
     link: string,
     pages: number,
