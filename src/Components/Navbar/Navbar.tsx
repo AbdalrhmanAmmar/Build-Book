@@ -2,13 +2,44 @@ import { IoSearch } from "react-icons/io5";
 import Input from "../UI_Shared/Input";
 import { FaTrash } from "react-icons/fa";
 import { MdDarkMode } from "react-icons/md";
+import { ChangeEvent } from "react";
+
 
 interface Iprops {
   DeleteCounter: number;
-  openDeletedModal:()=>void;
+  openDeletedModal: () => void;
+  setSearchQuery: (query: string) => void;
+  searchQuery: string;
+  onSearchsubmit: () => void;
 }
 
-function Navbar({ DeleteCounter, openDeletedModal }: Iprops) {
+function Navbar({
+  DeleteCounter,
+  openDeletedModal,
+  setSearchQuery,
+
+
+  onSearchsubmit,
+}: Iprops) {
+
+
+  const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const query = e.target.value;
+    setSearchQuery(query);
+    onSearchsubmit();
+
+  };
+
+  // const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const query = e.target.value;
+  //   setSearchQuery(query);
+
+  //   const filteredBooks = ListBookItem.filter((book) =>
+  //     book.title.includes(query)
+  //   );
+  //   setListBookItem(filteredBooks);
+  // };
   return (
     <nav className="  top-0 sticky ">
       <div className="flex items-center justify-around    py-3 bg-gradient-to-r from-blue-400 to-purple-600 text-white  rounded-md  w-full">
@@ -34,7 +65,7 @@ function Navbar({ DeleteCounter, openDeletedModal }: Iprops) {
         )}
 
         <div className="w-[50%] relative  flex items-center">
-          <Input Variant="Search" />
+          <Input Variant="Search" onChange={onSearch} />
           <IoSearch
             size={25}
             className="absolute right-2 top-1.5 text-gray-400"

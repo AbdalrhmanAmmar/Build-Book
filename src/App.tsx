@@ -35,14 +35,15 @@ function App() {
   const [Bookcover, setBookcover] = useState<File | undefined>();
   const [DeleteCounter, setDeleteCounter] = useState<number>(0);
   const [FaTrashItem, setFaTrashItem] = useState<Ibooks[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  console.log(searchQuery);
 
   //Function
-  console.log(Book);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBook({ ...Book, [name]: value });
-    console.log(Book);
   };
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -53,7 +54,6 @@ function App() {
     ]);
     setBook(defaultProductObj);
     closeModal();
-    console.log(Book);
 
     toast.success("Successfully toasted!");
   };
@@ -64,24 +64,33 @@ function App() {
     setDeleteCounter((prevCounter) => prevCounter + 1);
     ShowdeletedItem(id);
   };
-
   const ShowdeletedItem = (id: string) => {
     const filteredBook = ListBookItem.filter((book) => book.id === id);
     setFaTrashItem((prev) => prev.concat(filteredBook));
   };
-
   const Recover_deleted_books = () => {
     setDeleteCounter(0);
     setListBookItem((prev) => [...FaTrashItem, ...prev]);
     setFaTrashItem([]);
   };
-
   const Retrieve_this_item = (id: string) => {
     const FilterFaTrashItem = FaTrashItem.filter((item) => item.id !== id);
     const FilterFaTrashItemBack = FaTrashItem.filter((item) => item.id === id);
     setFaTrashItem(FilterFaTrashItem);
     setListBookItem((prev) => [...FilterFaTrashItemBack, ...prev]);
     setDeleteCounter((prevCounter) => prevCounter - 1);
+  };
+
+  const onSearchsubmit = () => {
+    if (searchQuery === "") {
+      setListBookItem(RenderBookList);
+    } else {
+      const filterbysearch = RenderBookList.filter((bookItem) =>
+        bookItem.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      setListBookItem(filterbysearch);
+    }
   };
 
   function closeModal() {
@@ -164,6 +173,9 @@ function App() {
       <Navbar
         DeleteCounter={DeleteCounter}
         openDeletedModal={openDeletedModal}
+        setSearchQuery={setSearchQuery}
+        searchQuery={searchQuery}
+        onSearchsubmit={onSearchsubmit}
       />
 
       <div className="w-[100%]">
@@ -263,7 +275,7 @@ function App() {
                 {deletedBookmark}
               </div>
               <Button
-                Color='red'
+                Color="red"
                 onClick={() => Recover_deleted_books()}
                 className="w-[60%] justify-center m-auto"
               >
