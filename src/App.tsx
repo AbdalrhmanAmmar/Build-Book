@@ -35,8 +35,6 @@ function App() {
   const [FaTrashItem, setFaTrashItem] = useState<Ibooks[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  console.log(searchQuery);
-
   //Function
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +50,6 @@ function App() {
     ]);
     setBook(defaultProductObj);
     closeModal();
-
   };
 
   const onDeleteHandler = (id: string) => {
@@ -60,7 +57,6 @@ function App() {
     setListBookItem(filteredBook);
     setDeleteCounter((prevCounter) => prevCounter + 1);
     ShowdeletedItem(id);
-
   };
   const ShowdeletedItem = (id: string) => {
     const filteredBook = ListBookItem.filter((book) => book.id === id);
@@ -88,6 +84,19 @@ function App() {
       );
 
       setListBookItem(filterbysearch);
+    }
+  };
+
+  const onFilterchange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+
+    if (value === "All") {
+      setListBookItem(RenderBookList); // Reset to the original list if "All" is selected
+    } else {
+      const filterbycategory = RenderBookList.filter((BookCategory) =>
+        BookCategory.category.toLowerCase().includes(value.toLowerCase())
+      );
+      setListBookItem(filterbycategory);
     }
   };
 
@@ -122,6 +131,9 @@ function App() {
   ));
 
   //RenderForms
+  const CategoryFilter = RenderBookList.map((categoryBook) => (
+    <Category key={categoryBook.id} categoryBook={categoryBook} />
+  ));
 
   const firstTwoInputs = Formdata.slice(0, 8).map((input) => (
     <div key={input.id}>
@@ -192,8 +204,21 @@ function App() {
       <div className="w-[100%]">
         <div className="container mx-auto ">
           <div className="flex justify-between my-4 items-center gap-4 md:w-full ">
-            <div className="py-2 px-3 bg-gray-900 text-white rounded-md gap flex-1 text-center">
-              <Category />
+            <div className="py-2 px-3 bg-black rounded-md flex-1 text-center ">
+              <label htmlFor="" className="flex justify-between">
+                <span className="text-white font-semibold flex-1 w-[25%] ">
+                  category:{" "}
+                </span>
+                <select
+                  onChange={onFilterchange}
+                  className="rounded-md text-black bg-indigo-300 border-none outline-none w-[60%]"
+                  name=""
+                  id=""
+                >
+                  <option value="All">All</option>
+                  {CategoryFilter}
+                </select>
+              </label>
             </div>
 
             <Button
