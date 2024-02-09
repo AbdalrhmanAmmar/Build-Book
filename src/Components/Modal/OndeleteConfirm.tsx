@@ -1,18 +1,15 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
-import { IoCloseCircleOutline } from "react-icons/io5";
-import Button from "./Button";
 
 interface Iprops {
-  isdeletedItemopen: boolean;
   closeModal: () => void;
+  ConfirmdeleteItem: boolean;
   children: ReactNode;
 }
-
-function DeletedItemModal({ isdeletedItemopen, closeModal, children }: Iprops) {
+function OndeleteConfirm({ closeModal, ConfirmdeleteItem, children }: Iprops) {
   return (
     <div>
-      <Transition appear show={isdeletedItemopen} as={Fragment}>
+      <Transition appear show={ConfirmdeleteItem} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -37,17 +34,12 @@ function DeletedItemModal({ isdeletedItemopen, closeModal, children }: Iprops) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className=" transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 flex items-center justify-between gap-4 "
+                    className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    <h2 className="text-red-500 text-2xl">
-                      Your Deleted Books
-                    </h2>
-                    <Button Color="Close" onClick={closeModal}>
-                      <IoCloseCircleOutline size={35} />
-                    </Button>
+                    Are You Sure To delete Item
                   </Dialog.Title>
                   <div className="mt-4">{children}</div>
                 </Dialog.Panel>
@@ -60,4 +52,4 @@ function DeletedItemModal({ isdeletedItemopen, closeModal, children }: Iprops) {
   );
 }
 
-export default DeletedItemModal;
+export default OndeleteConfirm;

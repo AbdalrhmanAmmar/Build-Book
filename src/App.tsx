@@ -1,15 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import BookCard from "./Components/BookCard";
+import BookCard from "./Components/BookCard/BookCard";
 import Navbar from "./Components/Navbar/Navbar";
 import { Formdata, RenderBookList } from "./data";
 import Button from "./Components/UI_Shared/Button";
-import Modal from "./Components/UI_Shared/Modal";
+import Modal from "./Components/Modal/Modal";
 import Input from "./Components/UI_Shared/Input";
 import Category from "./Components/UI_Shared/Category";
 import { Ibooks } from "./Interfaces/index";
 import { v4 as uuid } from "uuid";
-import DeletedItemModal from "./Components/UI_Shared/DeletedItemModal";
+import DeletedItemModal from "./Components/Modal/DeletedItemModal";
 import DeletedBooks from "./Components/DeletedBook/DeletedBooks";
+import OndeleteConfirm from "./Components/Modal/OndeleteConfirm";
 
 function App() {
   //State
@@ -30,10 +31,12 @@ function App() {
   const [ListBookItem, setListBookItem] = useState<Ibooks[]>(RenderBookList);
   const [isOpen, setIsOpen] = useState(false);
   const [isdeletedItemopen, setIsdeletedItemopen] = useState(false);
+  const [ConfirmdeleteItem, setConfirmdeleteItem] = useState(false);
   const [Bookcover, setBookcover] = useState<File | undefined>();
   const [DeleteCounter, setDeleteCounter] = useState<number>(0);
   const [FaTrashItem, setFaTrashItem] = useState<Ibooks[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [idfordelete, setidfordelete] = useState<string>("");
 
   //Function
 
@@ -57,6 +60,7 @@ function App() {
     setListBookItem(filteredBook);
     setDeleteCounter((prevCounter) => prevCounter + 1);
     ShowdeletedItem(id);
+    closeModal();
   };
   const ShowdeletedItem = (id: string) => {
     const filteredBook = ListBookItem.filter((book) => book.id === id);
@@ -103,6 +107,7 @@ function App() {
   function closeModal() {
     setIsOpen(false);
     setIsdeletedItemopen(false);
+    setConfirmdeleteItem(false);
   }
 
   function openModal() {
@@ -110,6 +115,10 @@ function App() {
   }
   function openDeletedModal() {
     setIsdeletedItemopen(true);
+  }
+  function OpenConfirmdeleteItem(id: string) {
+    setConfirmdeleteItem(true);
+    setidfordelete(id);
   }
 
   function UploadImg(e: ChangeEvent<HTMLInputElement>) {
@@ -127,7 +136,11 @@ function App() {
   // ));
   //Render Date by Maping
   const RenderBookItems = ListBookItem.map((books) => (
-    <BookCard key={books.id} books={books} onDeleteHandler={onDeleteHandler} />
+    <BookCard
+      key={books.id}
+      books={books}
+      OpenConfirmdeleteItem={OpenConfirmdeleteItem}
+    />
   ));
 
   //RenderForms
@@ -321,6 +334,24 @@ function App() {
               )}
             </div>
           </DeletedItemModal>
+          <OndeleteConfirm
+            ConfirmdeleteItem={ConfirmdeleteItem}
+            closeModal={closeModal}
+          >
+            <div className="flex gap-3">
+              <Button onClick={closeModal} Color="indigo">
+                Cancel
+              </Button>
+              <Button
+                Color="RecoveryItem"
+                onClick={() => {
+                  onDeleteHandler(idfordelete);
+                }}
+              >
+                Delete
+              </Button>
+            </div>
+          </OndeleteConfirm>
         </div>
       </div>
     </>

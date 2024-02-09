@@ -1,7 +1,8 @@
 import { Ibooks } from "../../Interfaces"
 
 interface Iprops {
-  categoryBook:Ibooks
+  categoryBook: Ibooks
+  
 }
 function Category({ categoryBook }: Iprops) {
   const { category } = categoryBook;

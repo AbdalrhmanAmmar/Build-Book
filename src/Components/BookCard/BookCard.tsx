@@ -1,12 +1,12 @@
-import { Ibooks } from "../Interfaces";
-import { descrpSlicer } from "../Lists";
-import Button from "./UI_Shared/Button";
+import { Ibooks } from "../../Interfaces";
+import { descrpSlicer } from "../../Lists";
+import Button from "../UI_Shared/Button";
 
 interface Iprops {
   books: Ibooks;
-  onDeleteHandler: (id:string) => void;
+  OpenConfirmdeleteItem: (id: string) => void;
 }
-function BookCard({ books, onDeleteHandler }: Iprops) {
+function BookCard({ books, OpenConfirmdeleteItem }: Iprops) {
   const {
     id,
     author,
@@ -71,7 +71,7 @@ function BookCard({ books, onDeleteHandler }: Iprops) {
                 More Info
               </Button>
               <Button className="">Edit</Button>
-              <Button Color="red" onClick={() => onDeleteHandler(id)}>
+              <Button Color="red" onClick={() => OpenConfirmdeleteItem(id)}>
                 Delete
               </Button>
             </div>
