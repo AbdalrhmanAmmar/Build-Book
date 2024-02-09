@@ -9,19 +9,30 @@ interface Iprops {
 function DeletedBooks({ deletedBook, Retrieve_this_item }: Iprops) {
   const { title, imageLink, id } = deletedBook;
   return (
-    <div className="bg-red-500 w-full items-center container mx-auto ">
-      <div className="">
+    <div className="flex flex-col p-3 ">
+      <div className=" items-center bg-white border border-gray-200 rounded-lg shadow   hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 gap-3 ">
         <h2 className="text-sm text-center font-bold my-2  max-fit">{title}</h2>
-        {imageLink &&
-          typeof imageLink === "string" && ( // Check if imageLink is a string
-            <img
-              className="object-cover w-full rounded-t-lg h-96 md:h-full md:w-full sm:h-full md:rounded-none md:rounded-s-lg"
-              src={imageLink}
-              alt={title}
-            />
-          )}
+        {imageLink && typeof imageLink === "string" && (
+          <img
+            className="object-cover w-full items-center rounded-t-lg h-96  md:rounded-none md:rounded-s-lg"
+            src={imageLink}
+            alt={title}
+          />
+        )}
+
+        {imageLink && typeof imageLink !== "string" && (
+          <img
+            className="object-cover w-full items-center rounded-t-lg h-96  md:rounded-none md:rounded-s-lg"
+            src={URL.createObjectURL(imageLink)}
+            alt={title}
+          />
+        )}
       </div>
-      <Button className="my-5" onClick={() => Retrieve_this_item(id)}>
+      <Button
+        Color="RecoveryAll"
+        className="my-5"
+        onClick={() => Retrieve_this_item(id)}
+      >
         Retrieve this item
       </Button>
     </div>

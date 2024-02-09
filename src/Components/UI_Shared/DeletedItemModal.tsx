@@ -1,5 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
+import { IoCloseCircleOutline } from "react-icons/io5";
+import Button from "./Button";
 
 interface Iprops {
   isdeletedItemopen: boolean;
@@ -38,9 +40,14 @@ function DeletedItemModal({ isdeletedItemopen, closeModal, children }: Iprops) {
                 <Dialog.Panel className=" transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6 text-gray-900 flex items-center justify-between gap-4 "
                   >
-                    <h2 className="text-red-500">Your Deleted Book</h2>
+                    <h2 className="text-red-500 text-2xl">
+                      Your Deleted Books
+                    </h2>
+                    <Button Color="Close" onClick={closeModal}>
+                      <IoCloseCircleOutline size={35} />
+                    </Button>
                   </Dialog.Title>
                   <div className="mt-4">{children}</div>
                 </Dialog.Panel>

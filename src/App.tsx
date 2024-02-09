@@ -5,11 +5,9 @@ import { Formdata, RenderBookList } from "./data";
 import Button from "./Components/UI_Shared/Button";
 import Modal from "./Components/UI_Shared/Modal";
 import Input from "./Components/UI_Shared/Input";
-import Label from "./Components/UI_Shared/Label";
 import Category from "./Components/UI_Shared/Category";
 import { Ibooks } from "./Interfaces/index";
 import { v4 as uuid } from "uuid";
-import toast, { Toaster } from "react-hot-toast";
 import DeletedItemModal from "./Components/UI_Shared/DeletedItemModal";
 import DeletedBooks from "./Components/DeletedBook/DeletedBooks";
 
@@ -55,7 +53,6 @@ function App() {
     setBook(defaultProductObj);
     closeModal();
 
-    toast.success("Successfully toasted!");
   };
 
   const onDeleteHandler = (id: string) => {
@@ -63,6 +60,7 @@ function App() {
     setListBookItem(filteredBook);
     setDeleteCounter((prevCounter) => prevCounter + 1);
     ShowdeletedItem(id);
+
   };
   const ShowdeletedItem = (id: string) => {
     const filteredBook = ListBookItem.filter((book) => book.id === id);
@@ -125,39 +123,54 @@ function App() {
 
   //RenderForms
 
-  const firstTwoInputs = Formdata.map((input) => (
+  const firstTwoInputs = Formdata.slice(0, 8).map((input) => (
     <div key={input.id}>
-      <label htmlFor={input.id}>{input.name}</label>
-      {input.type === "file" ? ( // Check if input type is file
-        <div>
-          <input
-            type="file"
-            id={input.id}
-            onChange={UploadImg}
-            accept=".jpg,.png,.jpeg"
-          />
-          {Bookcover && (
-            <div>
-              <img
-                src={URL.createObjectURL(Bookcover)}
-                alt="Uploaded Cover"
-                style={{ maxWidth: "100px", maxHeight: "100px" }}
-              />
-              <button onClick={DeleteImg}>Delete Image</button>
-            </div>
-          )}
-        </div>
-      ) : (
-        <Input
-          type={input.type}
-          name={input.name}
-          value={Book[input.name]}
-          id={input.id}
-          onChange={onChangeHandler}
-        />
-      )}
+      <label htmlFor={input.id}>{input.id}</label>
+
+      <Input
+        type={input.type}
+        name={input.name}
+        value={Book[input.name]}
+        id={input.id}
+        onChange={onChangeHandler}
+      />
     </div>
   ));
+
+  const ImgLink = Formdata.slice(9).map((BoolImg) => {
+    return (
+      <div className="">
+        {!Bookcover ? (
+          <label className="flex flex-cols items-center gap-3">
+            {BoolImg.name}
+            <input
+              type="file"
+              id={BoolImg.id}
+              onChange={UploadImg}
+              accept=".jpg,.png,.jpeg"
+              className="sr-only"
+            />
+            <div className="flex flex-col items-center">
+              <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
+                Choose Img
+              </span>
+            </div>
+          </label>
+        ) : (
+          <div className="flex flex-rows items-center gap-3">
+            <img
+              src={URL.createObjectURL(Bookcover)}
+              alt="Uploaded Cover"
+              style={{ maxWidth: "300px", maxHeight: "300px" }}
+            />
+            <Button Color="red" onClick={DeleteImg}>
+              Delete Image
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  });
 
   const deletedBookmark = FaTrashItem.map((deletedBook) => (
     <DeletedBooks
@@ -169,7 +182,6 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
       <Navbar
         DeleteCounter={DeleteCounter}
         openDeletedModal={openDeletedModal}
@@ -177,7 +189,6 @@ function App() {
         searchQuery={searchQuery}
         onSearchsubmit={onSearchsubmit}
       />
-
       <div className="w-[100%]">
         <div className="container mx-auto ">
           <div className="flex justify-between my-4 items-center gap-4 md:w-full ">
@@ -210,9 +221,7 @@ function App() {
               <div className="flex flex-row gap-2">
                 {firstTwoInputs.slice(4, 8)}
               </div>
-              <div className="flex flex-row gap-2">
-                {firstTwoInputs.slice(9)}
-              </div>
+              <div className="flex  gap-4 my-2 items-center">{ImgLink}</div>
 
               {/* {remainingInputs}
             <div className="flex justify-between gap-1">{LastInputs}</div> */}
@@ -256,10 +265,6 @@ function App() {
                 </Label>
               </div> */}
 
-              <Label>
-                <span className="tetx">Upload Book Image</span>
-                <Input className="sr-only" type="file" />
-              </Label>
               <div className="mt-4 flex gap-3">
                 <Button Color="Add">Add book</Button>
                 <Button Color="Cancel">Cancel</Button>
@@ -271,16 +276,24 @@ function App() {
             closeModal={closeModal}
           >
             <div className="flex flex-col justify-between">
-              <div className="grid grid-cols-4 gap-3 my-3 ">
-                {deletedBookmark}
-              </div>
-              <Button
-                Color="red"
-                onClick={() => Recover_deleted_books()}
-                className="w-[60%] justify-center m-auto"
-              >
-                Recover deleted books
-              </Button>
+              {deletedBookmark.length === 0 ? (
+                <h3 className="text-center text-2xl font-semibold bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-900 inline-block text-transparent bg-clip-text">
+                  There Is no item
+                </h3>
+              ) : (
+                <>
+                  <div className="grid grid-cols-4 gap-3 my-3 ">
+                    {deletedBookmark}
+                  </div>
+                  <Button
+                    Color="RecoveryItem"
+                    onClick={() => Recover_deleted_books()}
+                    className="w-[60%] justify-center m-auto"
+                  >
+                    Recover deleted books
+                  </Button>
+                </>
+              )}
             </div>
           </DeletedItemModal>
         </div>
