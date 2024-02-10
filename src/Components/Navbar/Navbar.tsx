@@ -10,7 +10,7 @@ interface Iprops {
   openDeletedModal: () => void;
   setSearchQuery: (query: string) => void;
   searchQuery: string;
-  onSearchsubmit: () => void;
+  onSearchsubmit: (query:string) => void;
 }
 
 function Navbar({
@@ -26,8 +26,9 @@ function Navbar({
   const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
 
     const query = e.target.value;
-    setSearchQuery(query);
-    onSearchsubmit();
+     setSearchQuery(query);
+    onSearchsubmit(query);
+   
 
   };
 

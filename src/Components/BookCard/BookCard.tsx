@@ -22,10 +22,17 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
     description,
     category,
   } = books;
+
+  const words = category
+    .split(", ")
+    .map((word) => (
+      <span className="bg-blue-300 rounded-md px-3 py-1 ">{word}</span>
+    ));
+
   return (
     <>
       <div className=" w-full h-full ">
-        <div className="p-2 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 gap-3 h-full ">
+        <div className="p-2 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 gap-3 md:h-full ">
           {imageLink && typeof imageLink === "string" && (
             <img
               className="object-cover w-full rounded-t-lg h-96 md:h-full md:w-full sm:h-full md:rounded-none md:rounded-s-lg"
@@ -42,7 +49,7 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
             />
           )}
 
-          <div className="flex flex-col items-start sm:h-full justify-between">
+          <div className="flex flex-col items-start sm:h-full md:justify-between">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               <a className=" text-blue-800" href={link}>
                 {title}
@@ -62,11 +69,11 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
               <h3>Country: {country}</h3>
               <h3>Pages: {pages}</h3>
             </div>
-            <h2 className="justify-start items-start me-auto flex flex-row gap-3  ">
+            <h2 className="justify-start items-center me-auto flex flex-row gap-1  ">
               Category:
-              <span className="bg-blue-300 rounded-md px-3 py-1 block ">
-                #{category}
-              </span>
+              <div className=" flex gap-1 ">
+                {words}
+              </div>
             </h2>
             <div className="flex my-3 w-full gap-1">
               <Button

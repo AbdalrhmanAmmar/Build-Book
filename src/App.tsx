@@ -83,12 +83,12 @@ function App() {
     setDeleteCounter((prevCounter) => prevCounter - 1);
   };
 
-  const onSearchsubmit = () => {
-    if (searchQuery === "") {
+  const onSearchsubmit = (query:string) => {
+    if (query === "") {
       setListBookItem(RenderBookList);
     } else {
       const filterbysearch = RenderBookList.filter((bookItem) =>
-        bookItem.title.toLowerCase().includes(searchQuery.toLowerCase())
+        bookItem.title.toLowerCase().includes(query.toLowerCase())
       );
 
       setListBookItem(filterbysearch);
