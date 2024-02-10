@@ -40,7 +40,7 @@ function App() {
   const [FaTrashItem, setFaTrashItem] = useState<Ibooks[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [idfordelete, setidfordelete] = useState<string>("");
-  const [GetIndex, setGetIndex] = useState<number | undefined>(undefined);
+  const [GetIndex, setGetIndex] = useState<number >(0);
 
   //Function
 
@@ -48,7 +48,6 @@ function App() {
     const { name, value } = e.target;
     setBook({ ...Book, [name]: value });
   };
-
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setListBookItem((prev) => [
@@ -82,6 +81,21 @@ function App() {
     setListBookItem((prev) => [...FilterFaTrashItemBack, ...prev]);
     setDeleteCounter((prevCounter) => prevCounter - 1);
   };
+
+  const nextBookItem = () => {
+    if (GetIndex >= ListBookItem.length - 1) {
+      return;
+
+     }else
+    setGetIndex((previous) => previous + 1);
+  }
+  const PreviousBookItem = () => {
+    if (GetIndex === 0) {
+      setGetIndex(0)
+    }else
+      setGetIndex((previous) => previous - 1);
+    
+  }
 
   const onSearchsubmit = (query:string) => {
     if (query === "") {
@@ -165,7 +179,12 @@ let RenderMoreInfo;
 if (typeof GetIndex !== "undefined") {
   const newGetIndex = GetIndex + 1;
   RenderMoreInfo = ListBookItem.slice(GetIndex, newGetIndex).map((bookInfo) => (
-    <MoreInfoData key={bookInfo.id} bookInfo={bookInfo} />
+    <MoreInfoData
+      nextBookItem={nextBookItem}
+      PreviousBookItem={PreviousBookItem}
+      key={bookInfo.id}
+      bookInfo={bookInfo}
+    />
   ));
 } 
 
@@ -197,6 +216,7 @@ if (typeof GetIndex !== "undefined") {
             <input
               type="file"
               id={BoolImg.id}
+              value={Book[BoolImg.name]}
               onChange={UploadImg}
               accept=".jpg,.png,.jpeg"
               className="sr-only"
