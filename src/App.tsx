@@ -13,6 +13,7 @@ import DeletedBooks from "./Components/DeletedBook/DeletedBooks";
 import OndeleteConfirm from "./Components/Modal/OndeleteConfirm";
 import MoreInfodata from "./Components/Modal/MoreInfodata";
 import MoreInfoData from "./Components/MoreInfo/MoreInfo";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 function App() {
   //State
@@ -40,7 +41,8 @@ function App() {
   const [FaTrashItem, setFaTrashItem] = useState<Ibooks[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [idfordelete, setidfordelete] = useState<string>("");
-  const [GetIndex, setGetIndex] = useState<number >(0);
+  const [GetIndex, setGetIndex] = useState<number>(0);
+  const [Pagination, setPagination] = useState(0);
 
   //Function
 
@@ -85,19 +87,17 @@ function App() {
   const nextBookItem = () => {
     if (GetIndex >= ListBookItem.length - 1) {
       return;
-
-     }else
-    setGetIndex((previous) => previous + 1);
-  }
+    } else setGetIndex((previous) => previous + 1);
+  };
   const PreviousBookItem = () => {
     if (GetIndex === 0) {
-      setGetIndex(0)
-    }else
-      setGetIndex((previous) => previous - 1);
-    
-  }
+      setGetIndex(0);
+    } else setGetIndex((previous) => previous - 1);
+  };
 
-  const onSearchsubmit = (query:string) => {
+
+
+  const onSearchsubmit = (query: string) => {
     if (query === "") {
       setListBookItem(RenderBookList);
     } else {
@@ -125,7 +125,6 @@ function App() {
   const onMoreInfo = (index: number) => {
     OpenMoreInfo();
     setGetIndex(index);
-    
   };
 
   function closeModal() {
@@ -164,29 +163,82 @@ function App() {
   //   <ProductCard key={products.id} product={products} />
   // ));
   //Render Date by Maping
-  const RenderBookItems = ListBookItem.map((books, index) => (
-    <BookCard
-      key={books.id}
-      books={books}
-      OpenConfirmdeleteItem={OpenConfirmdeleteItem}
-      onMoreInfo={onMoreInfo}
-      index={index}
-    />
-  ));
 
-let RenderMoreInfo; 
+  const NextPagination = Pagination + 10;
+  const RenderBookItems = ListBookItem.slice(Pagination, NextPagination).map(
+    (books, index) => (
+      <>
+        <BookCard
+          key={books.id}
+          books={books}
+          OpenConfirmdeleteItem={OpenConfirmdeleteItem}
+          onMoreInfo={onMoreInfo}
+          index={index}
+        />
+      </>
+    )
+  );
 
-if (typeof GetIndex !== "undefined") {
-  const newGetIndex = GetIndex + 1;
-  RenderMoreInfo = ListBookItem.slice(GetIndex, newGetIndex).map((bookInfo) => (
-    <MoreInfoData
-      nextBookItem={nextBookItem}
-      PreviousBookItem={PreviousBookItem}
-      key={bookInfo.id}
-      bookInfo={bookInfo}
-    />
-  ));
-} 
+
+
+  
+const previousPaginations = () => {
+  if (Pagination === 0) {
+    return; // Already at the first page
+  }
+  setPagination((previous) => previous - 1);
+};
+
+const nextPaginations = () => {
+  const numPages = Math.ceil(ListBookItem.length / 10);
+  if (Pagination >= numPages - 1) {
+    return; // Already at the last page
+  }
+  setPagination((previous) => previous + 1);
+};
+
+  const handleClick = (i: number) => {
+    setPagination(i); // Set the pagination to the clicked page
+  };
+
+  const PaginationItem = [];
+  const numPages = Math.ceil(ListBookItem.length / 10); // Calculate the number of pages
+
+  for (let i = 0; i < numPages; i++) {
+    PaginationItem.push(
+      <button
+        className={`py-3 px-3 rounded-md font-bold cursor-pointer ${
+          Pagination === i ? "bg-blue-900 text-white" : "bg-blue-200 text-black"
+        }`}
+        key={i}
+        onClick={() => handleClick(i)}
+      >
+        <div
+          className="  rounded-md text-white font-bold"
+          key={i}
+        >
+          {/* Display the page number */}
+          {i + 1}
+        </div>
+      </button>
+    );
+  }
+
+  let RenderMoreInfo;
+
+  if (typeof GetIndex !== "undefined") {
+    const newGetIndex = GetIndex + 1;
+    RenderMoreInfo = ListBookItem.slice(GetIndex, newGetIndex).map(
+      (bookInfo) => (
+        <MoreInfoData
+          nextBookItem={nextBookItem}
+          PreviousBookItem={PreviousBookItem}
+          key={bookInfo.id}
+          bookInfo={bookInfo}
+        />
+      )
+    );
+  }
 
   //RenderForms
   const CategoryFilter = RenderBookList.map((categoryBook) => (
@@ -290,6 +342,20 @@ if (typeof GetIndex !== "undefined") {
           <div className="grid md:grid-cols-1 lg:grid-cols-2   gap-4 ">
             {RenderBookItems}
           </div>
+
+          <div className="flex justify-center items-center gap-4">
+            <button onClick={previousPaginations}>
+              <FaArrowAltCircleLeft size={35} />
+            </button>
+
+            <div className="flex justify-center gap-3 my-5">
+              {PaginationItem}
+            </div>
+            <button onClick={nextPaginations}>
+              <FaArrowAltCircleRight size={35} />
+            </button>
+          </div>
+
           <Modal isOpen={isOpen} closeModal={closeModal}>
             {/* <div className="flex gap-2 w-full justify-between">
               {firstTwoInputs}
