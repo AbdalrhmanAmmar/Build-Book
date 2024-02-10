@@ -1,0 +1,70 @@
+import { Ibooks } from "../../Interfaces";
+
+interface Iprops {
+  bookInfo: Ibooks;
+}
+function MoreInfoData({ bookInfo }: Iprops) {
+  const {
+    author,
+    country,
+    imageLink,
+    language,
+    link,
+    pages,
+    title,
+    year,
+    description,
+    category,
+  } = bookInfo;
+  return (
+    <div className=" w-full h-full ">
+      <div className="p-2 flex flex-col items-start justify-between bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 gap-3 h-full ">
+        {imageLink && typeof imageLink === "string" && (
+          <img
+            className="object-cover w-full rounded-t-lg h-96 md:h-full md:w-[60%] sm:h-full md:rounded-none md:rounded-s-lg"
+            src={imageLink}
+            alt={title}
+          />
+        )}
+
+        {imageLink && typeof imageLink !== "string" && (
+          <img
+            className="object-cover w-full rounded-t-lg h-96 md:h-full md:w-[60%] sm:h-full md:rounded-none md:rounded-s-lg"
+            src={URL.createObjectURL(imageLink)}
+            alt={title}
+          />
+        )}
+
+        <div className="flex flex-col items-center h-full bg-red-500">
+          <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <a className=" text-blue-800" href={link}>
+              {title}
+            </a>
+          </h1>
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            {description}
+          </p>
+          <h2 className="justify-start items-start me-auto">
+            Written by: <span className="font-semibold">{author}</span>
+          </h2>
+          <h2 className="justify-start items-start me-auto">
+            published in: <span className="font-bold"> {year}</span>
+          </h2>
+          <div className="flex justify-between w-full my-2">
+            <h3>Language: {language}</h3>
+            <h3>Country: {country}</h3>
+            <h3>Pages: {pages}</h3>
+          </div>
+          <h2 className="justify-start items-start me-auto flex flex-row gap-3  ">
+            Category:
+            <span className="bg-blue-300 rounded-md px-3 py-1 block ">
+              #{category}
+            </span>
+          </h2>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default MoreInfoData;

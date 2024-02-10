@@ -11,6 +11,8 @@ import { v4 as uuid } from "uuid";
 import DeletedItemModal from "./Components/Modal/DeletedItemModal";
 import DeletedBooks from "./Components/DeletedBook/DeletedBooks";
 import OndeleteConfirm from "./Components/Modal/OndeleteConfirm";
+import MoreInfodata from "./Components/Modal/MoreInfodata";
+import MoreInfoData from "./Components/MoreInfo/MoreInfo";
 
 function App() {
   //State
@@ -32,11 +34,13 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [isdeletedItemopen, setIsdeletedItemopen] = useState(false);
   const [ConfirmdeleteItem, setConfirmdeleteItem] = useState(false);
+  const [MoreInfo, setMoreInfo] = useState(false);
   const [Bookcover, setBookcover] = useState<File | undefined>();
   const [DeleteCounter, setDeleteCounter] = useState<number>(0);
   const [FaTrashItem, setFaTrashItem] = useState<Ibooks[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [idfordelete, setidfordelete] = useState<string>("");
+  const [GetIndex, setGetIndex] = useState<number | undefined>(undefined);
 
   //Function
 
@@ -104,10 +108,17 @@ function App() {
     }
   };
 
+  const onMoreInfo = (index: number) => {
+    OpenMoreInfo();
+    setGetIndex(index);
+    
+  };
+
   function closeModal() {
     setIsOpen(false);
     setIsdeletedItemopen(false);
     setConfirmdeleteItem(false);
+    setMoreInfo(false);
   }
 
   function openModal() {
@@ -119,6 +130,10 @@ function App() {
   function OpenConfirmdeleteItem(id: string) {
     setConfirmdeleteItem(true);
     setidfordelete(id);
+  }
+
+  function OpenMoreInfo() {
+    setMoreInfo(true);
   }
 
   function UploadImg(e: ChangeEvent<HTMLInputElement>) {
@@ -135,13 +150,24 @@ function App() {
   //   <ProductCard key={products.id} product={products} />
   // ));
   //Render Date by Maping
-  const RenderBookItems = ListBookItem.map((books) => (
+  const RenderBookItems = ListBookItem.map((books, index) => (
     <BookCard
       key={books.id}
       books={books}
       OpenConfirmdeleteItem={OpenConfirmdeleteItem}
+      onMoreInfo={onMoreInfo}
+      index={index}
     />
   ));
+
+let RenderMoreInfo; 
+
+if (typeof GetIndex !== "undefined") {
+  const newGetIndex = GetIndex + 1;
+  RenderMoreInfo = ListBookItem.slice(GetIndex, newGetIndex).map((bookInfo) => (
+    <MoreInfoData key={bookInfo.id} bookInfo={bookInfo} />
+  ));
+} 
 
   //RenderForms
   const CategoryFilter = RenderBookList.map((categoryBook) => (
@@ -352,6 +378,9 @@ function App() {
               </Button>
             </div>
           </OndeleteConfirm>
+          <MoreInfodata MoreInfo={MoreInfo} closeModal={closeModal}>
+            {RenderMoreInfo}
+          </MoreInfodata>
         </div>
       </div>
     </>

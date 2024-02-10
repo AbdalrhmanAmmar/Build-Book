@@ -4,9 +4,11 @@ import Button from "../UI_Shared/Button";
 
 interface Iprops {
   books: Ibooks;
+  onMoreInfo: (index: number) => void;
   OpenConfirmdeleteItem: (id: string) => void;
+  index: number;
 }
-function BookCard({ books, OpenConfirmdeleteItem }: Iprops) {
+function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
   const {
     id,
     author,
@@ -67,7 +69,11 @@ function BookCard({ books, OpenConfirmdeleteItem }: Iprops) {
               </span>
             </h2>
             <div className="flex my-3 w-full gap-1">
-              <Button Color="more" className="">
+              <Button
+                onClick={() => onMoreInfo(index)}
+                Color="more"
+                className=""
+              >
                 More Info
               </Button>
               <Button className="">Edit</Button>
