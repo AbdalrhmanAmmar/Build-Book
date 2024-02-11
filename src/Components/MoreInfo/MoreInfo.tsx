@@ -4,7 +4,7 @@ import { Ibooks } from "../../Interfaces";
 interface Iprops {
   bookInfo: Ibooks;
   nextBookItem: () => void;
-  PreviousBookItem:()=>void
+  PreviousBookItem: () => void;
 }
 function MoreInfoData({ bookInfo, nextBookItem, PreviousBookItem }: Iprops) {
   const {
@@ -36,7 +36,7 @@ function MoreInfoData({ bookInfo, nextBookItem, PreviousBookItem }: Iprops) {
           <div className="p-2 flex flex-col   justify-between bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 gap-3 h-full ">
             {imageLink && typeof imageLink === "string" && (
               <img
-                className="object-cover w-full rounded-t-lg h-96 md:h-[full] md:w-[35%]  md:rounded-none md:rounded-s-lg"
+                className="object-cover w-full rounded-t-lg h-96 md:h-[full] md:w-[60%]  md:rounded-none md:rounded-s-lg"
                 src={imageLink}
                 alt={title}
               />
@@ -52,7 +52,7 @@ function MoreInfoData({ bookInfo, nextBookItem, PreviousBookItem }: Iprops) {
 
             <div className="flex flex-col items-center h-[full ] justify-around mx-4 ">
               <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                <a className=" text-blue-800" href={link}>
+                <a target="_blank" className=" text-blue-800 underline" href={link}>
                   {title}
                 </a>
               </h1>
@@ -69,8 +69,12 @@ function MoreInfoData({ bookInfo, nextBookItem, PreviousBookItem }: Iprops) {
                 <h3 className="bg-blue-800 py-2 px-1 rounded-md text-white font-semibold">
                   Language: {language}
                 </h3>
-                <h3>Country: {country}</h3>
-                <h3>Pages: {pages}</h3>
+                <h3 className="bg-blue-800 py-2 px-1 rounded-md text-white font-semibold">
+                  Country: {country}
+                </h3>
+                <h3 className="bg-blue-800 py-2 px-1 rounded-md text-white font-semibold">
+                  Pages: {pages}
+                </h3>
               </div>
               <h2 className="justify-start items-start me-auto flex flex-row gap-3  ">
                 Category:

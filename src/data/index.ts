@@ -11,14 +11,12 @@ import { IForms, Ibooks } from "../Interfaces";
 // }
 
 
-export const RenderBookList:Ibooks[] = BooksList.map((book) => ({
-
-...book,
-    id: uuid(),
-  
-
-    
-  }));
+export const RenderBookList: Ibooks[] = BooksList.map((book) => ({
+  ...book,
+  id: uuid(),
+  pages: String(book.pages), 
+  year: String(book.year),
+}));
 
 
   

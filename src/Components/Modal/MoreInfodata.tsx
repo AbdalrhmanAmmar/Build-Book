@@ -42,8 +42,8 @@ function MoreInfodata({ closeModal, MoreInfo, children }: Iprops) {
                       as="h3"
                       className="text-lg font-medium leading-6 text-gray-900 flex items-center justify-between gap-4 "
                     >
-                      <h2 className="text-red-500 text-2xl">
-                        Your Deleted Books
+                      <h2 className="text-indigo-500 text-2xl">
+                        Your Book
                       </h2>
                       <Button Color="Close" onClick={closeModal}>
                         <IoCloseCircleOutline size={35} />

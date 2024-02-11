@@ -1,13 +1,13 @@
 export interface Ibooks  {
-    id: string;
+    id?: string;
     author: string,
     country: string,
     imageLink?: string | File | undefined
     language: string,
     link: string,
-    pages: number,
+    pages: string ,
     title: string,
-    year: number,
+    year: string,
     description: string,
     category:string,
 }

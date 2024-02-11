@@ -14,6 +14,7 @@ import OndeleteConfirm from "./Components/Modal/OndeleteConfirm";
 import MoreInfodata from "./Components/Modal/MoreInfodata";
 import MoreInfoData from "./Components/MoreInfo/MoreInfo";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import { onValidation } from "./Validation";
 
 function App() {
   //State
@@ -24,9 +25,9 @@ function App() {
     imageLink: "",
     language: "",
     link: "",
-    pages: 0,
+    pages: "",
     title: "",
-    year: 0,
+    year: "",
     description: "",
     category: "",
   };
@@ -43,6 +44,7 @@ function App() {
   const [idfordelete, setidfordelete] = useState<string>("");
   const [GetIndex, setGetIndex] = useState<number>(0);
   const [Pagination, setPagination] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   //Function
 
@@ -50,13 +52,34 @@ function App() {
     const { name, value } = e.target;
     setBook({ ...Book, [name]: value });
   };
+
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const errors = onValidation(Book as Ibooks, Bookcover);
+    console.log(errors);
+
+    const hasErrorMsg = Object.values(errors).some(
+      (value) => value === value && "Please Upload Image"
+    );
+    if (hasErrorMsg) {
+      console.log("Selected category:", selectedCategory);
+
+      return;
+    }
     setListBookItem((prev) => [
-      { ...Book, id: uuid(), imageLink: Bookcover },
+      {
+        ...Book,
+        id: uuid(),
+        imageLink: Bookcover,
+        category: selectedCategory,
+        title: "hello",
+      },
       ...prev,
     ]);
+
     setBook(defaultProductObj);
+
     closeModal();
   };
 
@@ -71,6 +94,13 @@ function App() {
     const filteredBook = ListBookItem.filter((book) => book.id === id);
     setFaTrashItem((prev) => prev.concat(filteredBook));
   };
+
+  const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+
+    setSelectedCategory(value);
+  };
+
   const Recover_deleted_books = () => {
     setDeleteCounter(0);
     setListBookItem((prev) => [...FaTrashItem, ...prev]);
@@ -94,8 +124,6 @@ function App() {
       setGetIndex(0);
     } else setGetIndex((previous) => previous - 1);
   };
-
-
 
   const onSearchsubmit = (query: string) => {
     if (query === "") {
@@ -132,6 +160,7 @@ function App() {
     setIsdeletedItemopen(false);
     setConfirmdeleteItem(false);
     setMoreInfo(false);
+    console.log("first")
   }
 
   function openModal() {
@@ -159,12 +188,8 @@ function App() {
   function DeleteImg() {
     setBookcover(undefined);
   }
-  // const RenderProduct = productList.map((products) => (
-  //   <ProductCard key={products.id} product={products} />
-  // ));
-  //Render Date by Maping
 
-  const NextPagination = Pagination + 10;
+  const NextPagination = Pagination + 8;
   const RenderBookItems = ListBookItem.slice(Pagination, NextPagination).map(
     (books, index) => (
       <>
@@ -179,30 +204,27 @@ function App() {
     )
   );
 
+  const previousPaginations = () => {
+    if (Pagination === 0) {
+      return; // Already at the first page
+    }
+    setPagination((previous) => previous - 1);
+  };
 
-
-  
-const previousPaginations = () => {
-  if (Pagination === 0) {
-    return; // Already at the first page
-  }
-  setPagination((previous) => previous - 1);
-};
-
-const nextPaginations = () => {
-  const numPages = Math.ceil(ListBookItem.length / 10);
-  if (Pagination >= numPages - 1) {
-    return; // Already at the last page
-  }
-  setPagination((previous) => previous + 1);
-};
+  const nextPaginations = () => {
+    const numPages = Math.ceil(ListBookItem.length / 8);
+    if (Pagination >= numPages - 1) {
+      return; // Already at the last page
+    }
+    setPagination((previous) => previous + 1);
+  };
 
   const handleClick = (i: number) => {
     setPagination(i); // Set the pagination to the clicked page
   };
 
   const PaginationItem = [];
-  const numPages = Math.ceil(ListBookItem.length / 10); // Calculate the number of pages
+  const numPages = Math.ceil(ListBookItem.length / 8); // Calculate the number of pages
 
   for (let i = 0; i < numPages; i++) {
     PaginationItem.push(
@@ -213,10 +235,7 @@ const nextPaginations = () => {
         key={i}
         onClick={() => handleClick(i)}
       >
-        <div
-          className="  rounded-md text-white font-bold"
-          key={i}
-        >
+        <div className="  rounded-md text-white font-bold" key={i}>
           {/* Display the page number */}
           {i + 1}
         </div>
@@ -371,53 +390,29 @@ const nextPaginations = () => {
               <div className="flex flex-row gap-2">
                 {firstTwoInputs.slice(4, 8)}
               </div>
+
               <div className="flex  gap-4 my-2 items-center">{ImgLink}</div>
-
-              {/* {remainingInputs}
-            <div className="flex justify-between gap-1">{LastInputs}</div> */}
-
-              {/* <div className="mt-2 flex  items-center  w-full ">
-                <span className="block h-80 w-80 rounded-md  items-center">
-                  {Bookcover ? (
-                    <img
-                      src={URL.createObjectURL(Bookcover)}
-                      alt="Avatar"
-                      className="h-full w-full rounded-md object-cover"
-                    />
-                  ) : (
-                    <span className="items-center">
-                      <FaBook className="h-full w-full rounded-md object-cover text-gray-700" />
-                    </span>
-                  )}
+              <div>{firstTwoInputs[8]}</div>
+              <label htmlFor="" className="flex justify-between">
+                <span className="text-white font-semibold flex-1 w-[25%] ">
+                  category:{" "}
                 </span>
-                <Label htmlFor="File-input">
-                  {!Bookcover ? (
-                    <span className="text-black bg-blue-300 py-4 px-4 rounded-md">
-                      Upload a File
-                    </span>
-                  ) : (
-                    <Button
-                      onClick={DeleteImg}
-                      className="text-black bg-red-500 py-4 px-4 rounded-md"
-                    >
-                      Delete Image
-                    </Button>
-                  )}
-
-                  <Input
-                    type="file"
-                    name="Avatar"
-                    id="File-input"
-                    accept=".jpg,.png,.jpeg"
-                    onChange={UploadImg}
-                    className="sr-only"
-                  />
-                </Label>
-              </div> */}
+                <select
+                  onChange={handleCategoryChange}
+                  className="rounded-md text-black bg-indigo-300 border-none outline-none w-[60%]"
+                  name=""
+                  id=""
+                >
+                  <option value="All">All</option>
+                  {CategoryFilter}
+                </select>
+              </label>
 
               <div className="mt-4 flex gap-3">
                 <Button Color="Add">Add book</Button>
-                <Button Color="Cancel">Cancel</Button>
+                <Button type="button" onClick={() => closeModal()} Color="Cancel">
+                  Cancel
+                </Button>
               </div>
             </form>
           </Modal>
