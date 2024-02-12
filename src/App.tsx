@@ -49,7 +49,7 @@ function App() {
     useState<Partial<Ibooks>>(defaultProductObj);
   const [BookToedit, setBookToedit] = useState<Ibooks>(defaultProductObj);
 
-  console.log(BookToedit);
+  console.log(BookToedit.imageLink);
   //Function
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -203,7 +203,6 @@ function App() {
     (books, index) => (
       <>
         <BookCard
-          
           setBookToedit={setBookToedit}
           openModal={openModal}
           key={books.id}
@@ -447,7 +446,7 @@ const ImgLink = (
                 </h3>
               ) : (
                 <>
-                  <div className="grid grid-cols-4 gap-3 my-3 ">
+                  <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-3 my-3 sm:grid-cols-1 ">
                     {deletedBookmark}
                   </div>
                   <Button

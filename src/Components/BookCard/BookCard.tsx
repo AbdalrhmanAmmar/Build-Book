@@ -10,7 +10,6 @@ interface Iprops {
   openModal: () => void;
   index: number;
   setBookToedit: (books: Ibooks) => void;
-  
 }
 function BookCard({
   books,
@@ -42,6 +41,7 @@ function BookCard({
 
   const onEditBooks = () => {
     setBookToedit(books);
+   
     openModal();
   };
 
