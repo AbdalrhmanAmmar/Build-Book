@@ -84,7 +84,7 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
                 More Info
               </Button>
               <Button className="">Edit</Button>
-              <Button Color="red" onClick={() => OpenConfirmdeleteItem(id)}>
+              <Button Color="red" onClick={() => OpenConfirmdeleteItem(id??"")}>
                 Delete
               </Button>
             </div>
