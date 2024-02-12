@@ -17,6 +17,6 @@ export interface Ibooks  {
 export interface IForms{
     id: string,
     type: string,
-    name: "author"|"country"|"imageLink"|"language"|"link"|"pages"|"title"|"year"|"description"|"category"
+    name: "author"|"country"|"imageLink"|"language"|"link"|"pages"|"title"|"year"|"description",
     placeholder: string,
 }
