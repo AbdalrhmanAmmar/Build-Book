@@ -174,7 +174,7 @@ function App() {
   function openDeletedModal() {
     setIsdeletedItemopen(true);
   }
-  function OpenConfirmdeleteItem(id: string) {
+  function OpenConfirmdeleteItem(id: string ) {
     setConfirmdeleteItem(true);
     setidfordelete(id);
   }
