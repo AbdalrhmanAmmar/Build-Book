@@ -184,6 +184,8 @@ const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
       setBookcover(file);
+    } else {
+      setBookcover(undefined);
     }
   }
 
