@@ -50,6 +50,7 @@ function App() {
   const [BookToedit, setBookToedit] = useState<Ibooks>(defaultProductObj);
 
   console.log(BookToedit.imageLink);
+  console.log(SaveError);
   //Function
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
