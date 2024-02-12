@@ -9,7 +9,7 @@ export interface Ibooks  {
     title: string,
     year: string,
     description: string,
-    category:string | readonly string[]
+    category:string 
 }
 
 

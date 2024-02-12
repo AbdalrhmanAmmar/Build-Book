@@ -21,18 +21,18 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
     title,
     year,
     description,
-    // category,
+    category,
   } = books;
 
   
-  // if (typeof category === 'string') {
-  //     const words = category
-  //       .split(", ")
-  //       .map((word) => (
-  //         <span className="bg-blue-300 rounded-md px-3 py-1 ">{word}</span>
-  //       ));
+  
+      const words = category
+        .split(", ")
+        .map((word) => (
+          <span className="bg-blue-300 rounded-md px-3 py-1 ">{word}</span>
+        ));
     
-  // }
+  
 
 
   return (
@@ -77,9 +77,7 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
             </div>
             <h2 className="justify-start items-center me-auto flex flex-row gap-1  ">
               Category:
-              <div className=" flex gap-1 ">
-                hello
-              </div>
+              <div className=" flex gap-1 ">{words}</div>
             </h2>
             <div className="flex my-3 w-full gap-1">
               <Button
@@ -90,7 +88,10 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
                 More Info
               </Button>
               <Button className="">Edit</Button>
-              <Button Color="red" onClick={() => OpenConfirmdeleteItem(id??"")}>
+              <Button
+                Color="red"
+                onClick={() => OpenConfirmdeleteItem(id ?? "")}
+              >
                 Delete
               </Button>
             </div>
