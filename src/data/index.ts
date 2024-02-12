@@ -58,13 +58,13 @@ export const Formdata:IForms[] = [
     id: "Pages",
     name: "pages",
     placeholder: "Pages",
-    type: "number",
+    type: "text",
   },
   {
     id: "Year",
     name: "year",
     placeholder: "Year",
-    type: "number",
+    type: "text",
   },
     {
     id: "Language",

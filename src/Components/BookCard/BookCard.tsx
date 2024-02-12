@@ -1,6 +1,7 @@
 import { Ibooks } from "../../Interfaces";
 import { descrpSlicer } from "../../Lists";
 import Button from "../UI_Shared/Button";
+// import Category from "../UI_Shared/Category";
 
 interface Iprops {
   books: Ibooks;
@@ -20,14 +21,19 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
     title,
     year,
     description,
-    category,
+    // category,
   } = books;
 
-  const words = category
-    .split(", ")
-    .map((word) => (
-      <span className="bg-blue-300 rounded-md px-3 py-1 ">{word}</span>
-    ));
+  
+  // if (typeof category === 'string') {
+  //     const words = category
+  //       .split(", ")
+  //       .map((word) => (
+  //         <span className="bg-blue-300 rounded-md px-3 py-1 ">{word}</span>
+  //       ));
+    
+  // }
+
 
   return (
     <>
@@ -72,7 +78,7 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
             <h2 className="justify-start items-center me-auto flex flex-row gap-1  ">
               Category:
               <div className=" flex gap-1 ">
-                {words}
+                hello
               </div>
             </h2>
             <div className="flex my-3 w-full gap-1">
