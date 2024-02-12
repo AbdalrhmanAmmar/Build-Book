@@ -4,7 +4,7 @@ export const BooksList =
   {
     "author": "Chinua Achebe",
     "country": "Nigeria",
-    "imageLink": "public/images/things-fall-apart.jpg",
+    "imageLink": "images/things-fall-apart.jpg",
     "language": "English",
     "link": "https://en.wikipedia.org/wiki/Things_Fall_Apart\n",
     "pages": 209,
