@@ -47,8 +47,9 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [SaveError, setSaveError] =
     useState<Partial<Ibooks>>(defaultProductObj);
+  const [BookToedit, setBookToedit] = useState<Ibooks>(defaultProductObj);
 
-  console.log(SaveError);
+  console.log(BookToedit);
   //Function
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -165,6 +166,7 @@ function App() {
     setConfirmdeleteItem(false);
     setMoreInfo(false);
     console.log("first");
+    setBookToedit(defaultProductObj)
   }
 
   function openModal() {
@@ -201,6 +203,9 @@ function App() {
     (books, index) => (
       <>
         <BookCard
+          
+          setBookToedit={setBookToedit}
+          openModal={openModal}
           key={books.id}
           books={books}
           OpenConfirmdeleteItem={OpenConfirmdeleteItem}
@@ -278,7 +283,7 @@ function App() {
       <Input
         type={input.type}
         name={input.name}
-        value={Book[input.name]}
+        value={BookToedit["author"] }
         id={input.id}
         onChange={onChangeHandler}
       />
@@ -293,7 +298,7 @@ const ImgLink = (
         <input
           type="file"
           id="imageLink" // Assuming "imageLink" is the correct property name in the Book object
-          value={Bookcover} // Assuming you want to display the currently selected image, if any
+          value={Bookcover  } // Assuming you want to display the currently selected image, if any
           onChange={UploadImg}
           accept=".jpg,.png,.jpeg"
           className="sr-only"
@@ -409,6 +414,7 @@ const ImgLink = (
                   </span>
                   <select
                     onChange={handleCategoryChange}
+                    value={BookToedit.category}
                     className="font-medium rounded-md text-black bg-blue-100 border-none outline-none w-[80%] py-1.5"
                     name=""
                     id=""

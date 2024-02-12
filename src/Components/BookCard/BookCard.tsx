@@ -7,9 +7,19 @@ interface Iprops {
   books: Ibooks;
   onMoreInfo: (index: number) => void;
   OpenConfirmdeleteItem: (id: string) => void;
+  openModal: () => void;
   index: number;
+  setBookToedit: (books: Ibooks) => void;
+  
 }
-function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
+function BookCard({
+  books,
+  OpenConfirmdeleteItem,
+  index,
+  onMoreInfo,
+  openModal,
+  setBookToedit,
+}: Iprops) {
   const {
     id,
     author,
@@ -24,16 +34,16 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
     category,
   } = books;
 
-  
-  
-      const words = category
-        .split(", ")
-        .map((word) => (
-          <span className="bg-blue-300 rounded-md px-3 py-1 ">{word}</span>
-        ));
-    
-  
+  const words = category
+    .split(", ")
+    .map((word) => (
+      <span className="bg-blue-300 rounded-md px-3 py-1 ">{word}</span>
+    ));
 
+  const onEditBooks = () => {
+    setBookToedit(books);
+    openModal();
+  };
 
   return (
     <>
@@ -87,7 +97,9 @@ function BookCard({ books, OpenConfirmdeleteItem, index, onMoreInfo }: Iprops) {
               >
                 More Info
               </Button>
-              <Button className="">Edit</Button>
+              <Button onClick={onEditBooks} className="">
+                Edit
+              </Button>
               <Button
                 Color="red"
                 onClick={() => OpenConfirmdeleteItem(id ?? "")}
