@@ -20,7 +20,7 @@ export const RenderBookList: Ibooks[] = BooksList.map((book) => ({
 
 
   
-export const Formdata:IForms[] = [
+export const Formdata: IForms[] = [
   {
     id: "Title",
     name: "title",
@@ -33,13 +33,13 @@ export const Formdata:IForms[] = [
     placeholder: "Author",
     type: "text",
   },
-    {
+  {
     id: "Link",
     name: "link",
     placeholder: "Link",
     type: "text",
   },
-    {
+  {
     id: "Description",
     name: "description",
     placeholder: "Description",
@@ -51,8 +51,6 @@ export const Formdata:IForms[] = [
     placeholder: "Country",
     type: "text",
   },
-
-
 
   {
     id: "Pages",
@@ -66,11 +64,18 @@ export const Formdata:IForms[] = [
     placeholder: "Year",
     type: "text",
   },
-    {
+  {
     id: "Language",
     name: "language",
     placeholder: "Language",
     type: "text",
+  },
+
+  {
+    id: "Book Img",
+    name: "imageLink",
+    placeholder: "imageLink",
+    type: "file",
   },
 
   // {
@@ -78,12 +83,6 @@ export const Formdata:IForms[] = [
   //   name: "category",
   //   placeholder: "Category",
   //   type: "text",
-  // },
-  // {
-  //   id: "Book Img",
-  //   name: "imageLink",
-  //   placeholder: "imageLink",
-  //   type: "file",
   // },
 ];
 

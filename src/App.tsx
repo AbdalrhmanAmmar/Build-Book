@@ -48,7 +48,6 @@ function App() {
   const [SaveError, setSaveError] =
     useState<Partial<Ibooks>>(defaultProductObj);
 
-
   console.log(SaveError);
   //Function
 
@@ -57,33 +56,31 @@ function App() {
     setBook({ ...Book, [name]: value });
   };
 
-const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const errors = onValidation(Book as Ibooks, Bookcover);
-  setSaveError(errors);
-
-  const hasErrorMsg = Object.values(errors).some(
-    (value) => value === value && "Please Upload Image"
-  );
-  if (hasErrorMsg) {
+    const errors = onValidation(Book as Ibooks, Bookcover);
     setSaveError(errors);
-    return;
-  }
 
-  const newBook: Ibooks = { ...Book, id: uuid(), category: selectedCategory };
+    const hasErrorMsg = Object.values(errors).some(
+      (value) => value === value && "Please Upload Image"
+    );
+    if (hasErrorMsg) {
+      setSaveError(errors);
+      return;
+    }
 
-  if (Bookcover instanceof File) {
-    newBook.imageLink = URL.createObjectURL(Bookcover);
-  }
+    const newBook: Ibooks = { ...Book, id: uuid(), category: selectedCategory };
 
-  setListBookItem((prev) => [newBook, ...prev]);
-  setBook(defaultProductObj);
-  setBookcover(undefined); // Reset Bookcover after submission
-  closeModal();
-};
+    if (Bookcover instanceof File) {
+      newBook.imageLink = URL.createObjectURL(Bookcover);
+    }
 
-
+    setListBookItem((prev) => [newBook, ...prev]);
+    setBook(defaultProductObj);
+    setBookcover(undefined); // Reset Bookcover after submission
+    closeModal();
+  };
 
   const onDeleteHandler = (id: string) => {
     const filteredBook = ListBookItem.filter((book) => book.id !== id);
@@ -171,7 +168,7 @@ const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
   function openDeletedModal() {
     setIsdeletedItemopen(true);
   }
-  function OpenConfirmdeleteItem(id: string ) {
+  function OpenConfirmdeleteItem(id: string) {
     setConfirmdeleteItem(true);
     setidfordelete(id);
   }
@@ -180,19 +177,19 @@ const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     setMoreInfo(true);
   }
 
-// function UploadImg(e: ChangeEvent<HTMLInputElement>) {
-//   const file = e.target.files && e.target.files[0];
-//   if (file) {
-//     setBookcover(file); // Optional if you're using Bookcover elsewhere
-//     setBook({ ...Book, imageLink: file });
-//   } else {
-//     setBook({ ...Book, imageLink: undefined });
-//   }
-// }
+  function UploadImg(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setBookcover(file); // Optional if you're using Bookcover elsewhere
+      setBook({ ...Book, imageLink: file });
+    } else {
+      setBook({ ...Book, imageLink: undefined });
+    }
+  }
 
-//   function DeleteImg() {
-//     setBookcover(undefined);
-//   }
+  function DeleteImg() {
+    setBookcover(undefined);
+  }
 
   const NextPagination = Pagination + 8;
   const RenderBookItems = ListBookItem.slice(Pagination, NextPagination).map(
@@ -283,43 +280,43 @@ const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     </div>
   ));
 
-  // const ImgLink = Formdata.slice(9).map((BoolImg) => {
-  //   return (
-  //     <div className="">
-  //       {!Bookcover ? (
-  //         <label className="flex flex-cols items-center gap-3">
-  //           {BoolImg.name}
+  const ImgLink = Formdata.slice(8).map((BoolImg) => {
+    return (
+      <div className="">
+        {!Bookcover ? (
+          <label className="flex flex-cols items-center gap-3">
+            {BoolImg.name}
 
-  //           <input
-  //             type="file"
-  //             id={BoolImg.id}
-  //             value={Book[BoolImg.name]}
-  //             onChange={UploadImg}
-  //             accept=".jpg,.png,.jpeg"
-  //             className="sr-only"
-  //           />
+            <input
+              type="file"
+              id={BoolImg.id}
+              value={Book["imageLink"]}
+              onChange={UploadImg}
+              accept=".jpg,.png,.jpeg"
+              className="sr-only"
+            />
 
-  //           <div className="flex flex-col items-center">
-  //             <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
-  //               Choose Img
-  //             </span>
-  //           </div>
-  //         </label>
-  //       ) : (
-  //         <div className="flex flex-rows items-center gap-3">
-  //           <img
-  //             src={URL.createObjectURL(Bookcover)}
-  //             alt="Uploaded Cover"
-  //             style={{ maxWidth: "300px", maxHeight: "300px" }}
-  //           />
-  //           <Button Color="red" onClick={DeleteImg}>
-  //             Delete Image
-  //           </Button>
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
-  // });
+            <div className="flex flex-col items-center">
+              <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
+                Choose Img
+              </span>
+            </div>
+          </label>
+        ) : (
+          <div className="flex flex-rows items-center gap-3">
+            <img
+              src={URL.createObjectURL(Bookcover)}
+              alt="Uploaded Cover"
+              style={{ maxWidth: "300px", maxHeight: "300px" }}
+            />
+            <Button Color="red" onClick={DeleteImg}>
+              Delete Image
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  });
 
   const deletedBookmark = FaTrashItem.map((deletedBook) => (
     <DeletedBooks
@@ -400,7 +397,7 @@ const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
                 {firstTwoInputs.slice(4, 8)}
               </div>
 
-              <div className="flex  gap-4 my-2 items-center">"ImgLink"</div>
+              <div className="flex  gap-4 my-2 items-center">{ImgLink}</div>
               <div>{firstTwoInputs[8]}</div>
               <div className="py-2 px-3 bg-gradient-to-br from-blue-500 to-blue-300 rounded-md flex-1 text-center text-white ">
                 <label htmlFor="" className="flex gap-1  items-center ">
