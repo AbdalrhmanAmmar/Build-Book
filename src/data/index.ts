@@ -79,12 +79,12 @@ export const Formdata:IForms[] = [
   //   placeholder: "Category",
   //   type: "text",
   // },
-  {
-    id: "Book Img",
-    name: "imageLink",
-    placeholder: "imageLink",
-    type: "file",
-  },
+  // {
+  //   id: "Book Img",
+  //   name: "imageLink",
+  //   placeholder: "imageLink",
+  //   type: "file",
+  // },
 ];
 
 
