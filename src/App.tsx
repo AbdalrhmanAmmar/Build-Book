@@ -44,7 +44,7 @@ function App() {
   const [idfordelete, setidfordelete] = useState<string>("");
   const [GetIndex, setGetIndex] = useState<number>(0);
   const [Pagination, setPagination] = useState(0);
-  // const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [SaveError, setSaveError] =
     useState<Partial<Ibooks>>(defaultProductObj);
 
@@ -71,7 +71,7 @@ const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     return;
   }
 
-  const newBook: Ibooks = { ...Book, id: uuid(),  };
+  const newBook: Ibooks = { ...Book, id: uuid(), category: selectedCategory };
 
   if (Bookcover instanceof File) {
     newBook.imageLink = URL.createObjectURL(Bookcover);
@@ -97,11 +97,11 @@ const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     setFaTrashItem((prev) => prev.concat(filteredBook));
   };
 
-  // const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
-  //   const { value } = e.target;
+  const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
 
-  //   setSelectedCategory(value);
-  // };
+    setSelectedCategory(value);
+  };
 
   const Recover_deleted_books = () => {
     setDeleteCounter(0);
@@ -402,7 +402,7 @@ function UploadImg(e: ChangeEvent<HTMLInputElement>) {
 
               <div className="flex  gap-4 my-2 items-center">{ImgLink}</div>
               <div>{firstTwoInputs[8]}</div>
-              {/* <div className="py-2 px-3 bg-gradient-to-br from-blue-500 to-blue-300 rounded-md flex-1 text-center text-white ">
+              <div className="py-2 px-3 bg-gradient-to-br from-blue-500 to-blue-300 rounded-md flex-1 text-center text-white ">
                 <label htmlFor="" className="flex gap-1  items-center ">
                   <span className="text-black font-semibold flex-1 w-[30%] ">
                     category:{" "}
@@ -416,7 +416,7 @@ function UploadImg(e: ChangeEvent<HTMLInputElement>) {
                     {CategoryFilter}
                   </select>
                 </label>
-              </div> */}
+              </div>
 
               <div className="mt-4 flex gap-3">
                 <Button Color="Add">Add book</Button>
