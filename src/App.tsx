@@ -45,7 +45,11 @@ function App() {
   const [GetIndex, setGetIndex] = useState<number>(0);
   const [Pagination, setPagination] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [SaveError, setSaveError] =
+    useState<Partial<Ibooks>>(defaultProductObj);
 
+
+  console.log(SaveError);
   //Function
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,13 +61,14 @@ function App() {
     e.preventDefault();
 
     const errors = onValidation(Book as Ibooks, Bookcover);
-    console.log(errors);
+    setSaveError(errors)
+
 
     const hasErrorMsg = Object.values(errors).some(
       (value) => value === value && "Please Upload Image"
     );
     if (hasErrorMsg) {
-      console.log("Selected category:", selectedCategory);
+      setSaveError(errors);
 
       return;
     }
@@ -160,7 +165,7 @@ function App() {
     setIsdeletedItemopen(false);
     setConfirmdeleteItem(false);
     setMoreInfo(false);
-    console.log("first")
+    console.log("first");
   }
 
   function openModal() {
@@ -284,6 +289,7 @@ function App() {
         {!Bookcover ? (
           <label className="flex flex-cols items-center gap-3">
             {BoolImg.name}
+
             <input
               type="file"
               id={BoolImg.id}
@@ -292,6 +298,7 @@ function App() {
               accept=".jpg,.png,.jpeg"
               className="sr-only"
             />
+
             <div className="flex flex-col items-center">
               <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
                 Choose Img
@@ -380,6 +387,8 @@ function App() {
               {firstTwoInputs}
             </div> */}
             <form onSubmit={onSubmitHandler}>
+              {/* <ShowError SaveError={SaveError} /> */}
+
               <div className="flex gap-2 justify-between">
                 {firstTwoInputs[0]}
                 {firstTwoInputs[1]}
@@ -393,24 +402,29 @@ function App() {
 
               <div className="flex  gap-4 my-2 items-center">{ImgLink}</div>
               <div>{firstTwoInputs[8]}</div>
-              <label htmlFor="" className="flex justify-between">
-                <span className="text-white font-semibold flex-1 w-[25%] ">
-                  category:{" "}
-                </span>
-                <select
-                  onChange={handleCategoryChange}
-                  className="rounded-md text-black bg-indigo-300 border-none outline-none w-[60%]"
-                  name=""
-                  id=""
-                >
-                  <option value="All">All</option>
-                  {CategoryFilter}
-                </select>
-              </label>
+              <div className="py-2 px-3 bg-gradient-to-br from-blue-500 to-blue-300 rounded-md flex-1 text-center text-white ">
+                <label htmlFor="" className="flex gap-1  items-center ">
+                  <span className="text-black font-semibold flex-1 w-[30%] ">
+                    category:{" "}
+                  </span>
+                  <select
+                    onChange={handleCategoryChange}
+                    className="font-medium rounded-md text-black bg-blue-100 border-none outline-none w-[80%] py-1.5"
+                    name=""
+                    id=""
+                  >
+                    {CategoryFilter}
+                  </select>
+                </label>
+              </div>
 
               <div className="mt-4 flex gap-3">
                 <Button Color="Add">Add book</Button>
-                <Button type="button" onClick={() => closeModal()} Color="Cancel">
+                <Button
+                  type="button"
+                  onClick={() => closeModal()}
+                  Color="Cancel"
+                >
                   Cancel
                 </Button>
               </div>

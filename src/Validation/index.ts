@@ -32,7 +32,7 @@ export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
     errors.description = "description must be 50 characters ";
   }
 
-  if (link) {
+  if (!link) {
     errors.link = "Title is required";
   }
 
