@@ -57,36 +57,31 @@ function App() {
     setBook({ ...Book, [name]: value });
   };
 
-  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+ const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+   e.preventDefault();
 
-    const errors = onValidation(Book as Ibooks, Bookcover);
-    setSaveError(errors)
+   const errors = onValidation(Book as Ibooks, Bookcover);
+   setSaveError(errors);
 
+   const hasErrorMsg = Object.values(errors).some(
+     (value) => value === value && "Please Upload Image"
+   );
+   if (hasErrorMsg) {
+     setSaveError(errors);
+     return;
+   }
 
-    const hasErrorMsg = Object.values(errors).some(
-      (value) => value === value && "Please Upload Image"
-    );
-    if (hasErrorMsg) {
-      setSaveError(errors);
+   const newBook: Ibooks = { ...Book, id: uuid(), category: selectedCategory };
 
-      return;
-    }
-    setListBookItem((prev) => [
-      {
-        ...Book,
-        id: uuid(),
-        imageLink: Bookcover,
-        category: selectedCategory,
-        title: "hello",
-      },
-      ...prev,
-    ]);
+   if (Bookcover instanceof File) {
+     newBook.imageLink = URL.createObjectURL(Bookcover);
+   }
 
-    setBook(defaultProductObj);
+   setListBookItem((prev) => [newBook, ...prev]);
+   setBook(defaultProductObj);
+   closeModal();
+ };
 
-    closeModal();
-  };
 
   const onDeleteHandler = (id: string) => {
     const filteredBook = ListBookItem.filter((book) => book.id !== id);
