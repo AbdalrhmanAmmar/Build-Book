@@ -52,10 +52,25 @@ function App() {
   console.log(SaveError);
   //Function
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const { name, value, files } = e.target;
+
+  if (files && files.length > 0) {
+    // Handle file upload
+    // For example, you can read the file and convert it to a data URL
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileDataURL = reader.result as string;
+      setBook({ ...Book, [name]: fileDataURL });
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // Handle non-file inputs
     setBook({ ...Book, [name]: value });
-  };
+  }
+};
+
 
 const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
