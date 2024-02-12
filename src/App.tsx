@@ -70,7 +70,12 @@ function App() {
       return;
     }
 
-    const newBook: Ibooks = { ...Book, id: uuid(), category: selectedCategory };
+    const newBook: Ibooks = {
+      ...Book,
+      id: uuid(),
+      imageLink:Bookcover,
+      category: selectedCategory,
+    };
 
     if (Bookcover instanceof File) {
       newBook.imageLink = URL.createObjectURL(Bookcover);
@@ -177,19 +182,19 @@ function App() {
     setMoreInfo(true);
   }
 
-  // function UploadImg(e: ChangeEvent<HTMLInputElement>) {
-  //   const file = e.target.files && e.target.files[0];
-  //   if (file) {
-  //     setBookcover(file); // Optional if you're using Bookcover elsewhere
-  //     setBook({ ...Book, imageLink: file });
-  //   } else {
-  //     setBook({ ...Book, imageLink: undefined });
-  //   }
-  // }
+  function UploadImg(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setBookcover(file); // Optional if you're using Bookcover elsewhere
+      setBook({ ...Book, imageLink: file });
+    } else {
+      setBook({ ...Book, imageLink: undefined });
+    }
+  }
 
-  // function DeleteImg() {
-  //   setBookcover(undefined);
-  // }
+  function DeleteImg() {
+    setBookcover(undefined);
+  }
 
   const NextPagination = Pagination + 8;
   const RenderBookItems = ListBookItem.slice(Pagination, NextPagination).map(
@@ -280,43 +285,41 @@ function App() {
     </div>
   ));
 
-  // const ImgLink = Formdata.slice(8).map((BoolImg) => {
-  //   return (
-  //     <div className="">
-  //       {!Bookcover ? (
-  //         <label className="flex flex-cols items-center gap-3">
-  //           {BoolImg.name}
+const ImgLink = (
+  <div className="">
+    {!Bookcover ? (
+      <label className="flex flex-cols items-center gap-3">
+        Upload Your Img
+        <input
+          type="file"
+          id="imageLink" // Assuming "imageLink" is the correct property name in the Book object
+          value={Book.imageLink} // Assuming you want to display the currently selected image, if any
+          onChange={UploadImg}
+          accept=".jpg,.png,.jpeg"
+          className="sr-only"
+        />
+        <div className="flex flex-col items-center">
+          <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
+            Choose Img
+          </span>
+        </div>
+      </label>
+    ) : (
+      <div className="flex flex-rows items-center gap-3">
+        <img
+          src={URL.createObjectURL(Bookcover)}
+          alt="Uploaded Cover"
+          style={{ maxWidth: "300px", maxHeight: "300px" }}
+        />
+        <Button Color="red" onClick={DeleteImg}>
+          Delete Image
+        </Button>
+      </div>
+    )}
+  </div>
+);
 
-  //           <input
-  //             type="file"
-  //             id={BoolImg.id}
-  //             value={Book["imageLink"]}
-  //             onChange={UploadImg}
-  //             accept=".jpg,.png,.jpeg"
-  //             className="sr-only"
-  //           />
 
-  //           <div className="flex flex-col items-center">
-  //             <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
-  //               Choose Img
-  //             </span>
-  //           </div>
-  //         </label>
-  //       ) : (
-  //         <div className="flex flex-rows items-center gap-3">
-  //           <img
-  //             src={URL.createObjectURL(Bookcover)}
-  //             alt="Uploaded Cover"
-  //             style={{ maxWidth: "300px", maxHeight: "300px" }}
-  //           />
-  //           <Button Color="red" onClick={DeleteImg}>
-  //             Delete Image
-  //           </Button>
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
-  // });
 
   const deletedBookmark = FaTrashItem.map((deletedBook) => (
     <DeletedBooks
@@ -397,7 +400,7 @@ function App() {
                 {firstTwoInputs.slice(4, 8)}
               </div>
 
-              <div className="flex  gap-4 my-2 items-center">"ImgLink"</div>
+              <div className="flex  gap-4 my-2 items-center">{ImgLink}</div>
               <div>{firstTwoInputs[8]}</div>
               <div className="py-2 px-3 bg-gradient-to-br from-blue-500 to-blue-300 rounded-md flex-1 text-center text-white ">
                 <label htmlFor="" className="flex gap-1  items-center ">
