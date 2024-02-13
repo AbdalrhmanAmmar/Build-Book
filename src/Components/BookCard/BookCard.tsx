@@ -7,17 +7,21 @@ interface Iprops {
   books: Ibooks;
   onMoreInfo: (index: number) => void;
   OpenConfirmdeleteItem: (id: string) => void;
-  openModal: () => void;
+  openEditModal: () => void;
   index: number;
   setBookToedit: (books: Ibooks) => void;
+  setBookToeditIndex: (index: number) => void;
+  setBookcoverURL: (url: string) => void;
 }
 function BookCard({
   books,
   OpenConfirmdeleteItem,
   index,
   onMoreInfo,
-  openModal,
   setBookToedit,
+  openEditModal,
+  setBookToeditIndex,
+  setBookcoverURL,
 }: Iprops) {
   const {
     id,
@@ -41,8 +45,18 @@ function BookCard({
 
   const onEditBooks = () => {
     setBookToedit(books);
-   
-    openModal();
+    setBookToeditIndex(index);
+    if (typeof imageLink === "string") {
+      setBookcoverURL(imageLink);
+    }
+
+    // If imageLink is a File object, create a URL from it
+    if (imageLink instanceof File) {
+      const imageUrl = URL.createObjectURL(imageLink);
+      setBookcoverURL(imageUrl);
+    }
+
+    openEditModal();
   };
 
   return (

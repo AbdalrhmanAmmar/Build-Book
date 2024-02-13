@@ -52,7 +52,11 @@ function MoreInfoData({ bookInfo, nextBookItem, PreviousBookItem }: Iprops) {
 
             <div className="flex flex-col items-center h-[full ] justify-around mx-4 ">
               <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                <a target="_blank" className=" text-blue-800 underline" href={link}>
+                <a
+                  target="_blank"
+                  className=" text-blue-800 underline"
+                  href={link}
+                >
                   {title}
                 </a>
               </h1>
@@ -72,7 +76,7 @@ function MoreInfoData({ bookInfo, nextBookItem, PreviousBookItem }: Iprops) {
                 <h3 className="bg-blue-800 py-2 px-1 rounded-md text-white font-semibold">
                   Country: {country}
                 </h3>
-                <h3 className="bg-blue-800 py-2 px-1 rounded-md text-white font-semibold">
+                <h3 className="w-fit bg-red-800  px-1 rounded-md text-white font-semibold">
                   Pages: {pages}
                 </h3>
               </div>

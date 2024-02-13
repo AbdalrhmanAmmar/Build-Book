@@ -1,3 +1,5 @@
+import { TbookName } from "../types";
+
 export interface Ibooks  {
     id: string ;
     author: string,
@@ -14,9 +16,9 @@ export interface Ibooks  {
 
 
 
-export interface IForms{
-    id: string,
-    type: string,
-    name: "author"|"country"|"language"|"link"|"pages"|"title"|"year"|"description",
-    placeholder: string,
+export interface IForms {
+  id: string;
+  type: string;
+  name: TbookName;
+  placeholder: string;
 }

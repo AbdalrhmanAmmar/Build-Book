@@ -7,16 +7,16 @@ export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
     title = "",
     country = "",
     language = "",
-    
+
     link = "",
     pages = "",
 
     year = "",
     description = "",
-    category = "",
+    
   } = Books;
 
-  const imageLink =  imageBook
+  const imageLink = imageBook;
 
   // Initialize errors object
   const errors: Partial<Ibooks> = {};
@@ -40,26 +40,22 @@ export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
     errors.imageLink = "Please Upload Image";
   }
 
-  if (
-    !country.trim() ||
-    country.length < 3 ||
-    country.length > 15
-  ) {
+  if (!country.trim() || country.length < 3 || country.length > 15) {
     errors.country = "Country must be between 3 and 15 characters";
   }
 
   if (!pages.trim() || isNaN(Number(pages.trim()))) {
     errors.pages = "Valid Page is Required";
   }
-    if (!year.trim() || isNaN(Number(year.trim()))) {
-      errors.year = "Valid year is Required";
+  if (!year.trim() || isNaN(Number(year.trim()))) {
+    errors.year = "Valid year is Required";
   }
-    if (!language.trim() || language.length < 3 || language.length > 15) {
-      errors.language = "language must be between 3 and 15 characters";
-    }
-  if (category) {
-    errors.category = "Title is required";
+  if (!language.trim() || language.length < 3 || language.length > 15) {
+    errors.language = "language must be between 3 and 15 characters";
   }
+  // if (!category) {
+  //   errors.category = "Title is required";
+  // }
 
   return errors;
 };

@@ -14,7 +14,9 @@ import OndeleteConfirm from "./Components/Modal/OndeleteConfirm";
 import MoreInfodata from "./Components/Modal/MoreInfodata";
 import MoreInfoData from "./Components/MoreInfo/MoreInfo";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
-import { onValidation } from "./Validation";
+// import { onValidation } from "./Validation";
+import { TbookName } from "./types";
+// import ShowError from "./Components/ShowError/ShowError";
 
 function App() {
   //State
@@ -45,37 +47,44 @@ function App() {
   const [GetIndex, setGetIndex] = useState<number>(0);
   const [Pagination, setPagination] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [SaveError, setSaveError] =
-    useState<Partial<Ibooks>>(defaultProductObj);
+  // const [SaveError, setSaveError] =
+  //   useState<Partial<Ibooks>>(defaultProductObj);
   const [BookToedit, setBookToedit] = useState<Ibooks>(defaultProductObj);
+  const [BookToeditIndex, setBookToeditIndex] = useState<number>(0);
+  const [isOpenEditModel, setisOpenEditModel] = useState(false);
+  const [BookcoverURL, setBookcoverURL] = useState<string | undefined>(
+    undefined
+  ); // Set initial state to undefined
 
-  console.log(BookToedit.imageLink);
-  console.log(SaveError);
   //Function
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBook({ ...Book, [name]: value });
   };
+  const onChangeEditHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setBookToedit({ ...BookToedit, [name]: value });
+  };
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const errors = onValidation(Book as Ibooks, Bookcover);
-    setSaveError(errors);
+    // const errors = onValidation(Book as Ibooks, Bookcover);
+    // setSaveError(errors);
 
-    const hasErrorMsg = Object.values(errors).some(
-      (value) => value === value && "Please Upload Image"
-    );
-    if (hasErrorMsg) {
-      setSaveError(errors);
-      return;
-    }
+    // const hasErrorMsg = Object.values(errors).some(
+    //   (value) => value === value && "Please Upload Image"
+    // );
+    // if (hasErrorMsg) {
+    //   setSaveError(errors);
+    //   return;
+    // }
 
     const newBook: Ibooks = {
       ...Book,
       id: uuid(),
-      imageLink:Bookcover,
+      imageLink: Bookcover,
       category: selectedCategory,
     };
 
@@ -86,6 +95,32 @@ function App() {
     setListBookItem((prev) => [newBook, ...prev]);
     setBook(defaultProductObj);
     setBookcover(undefined); // Reset Bookcover after submission
+    setSelectedCategory('Fiction')
+    closeModal();
+  };
+  const onSubmitEditHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // const errors = onValidation(Book as Ibooks, Bookcover);
+    // setSaveError(errors);
+
+    // const hasErrorMsg = Object.values(errors).some(
+    //   (value) => value === value && "Please Upload Image"
+    // );
+    // if (hasErrorMsg) {
+    //   setSaveError(errors);
+    //   return;
+    // }
+    // console.log("first");
+
+    const updatedBooks = [...ListBookItem];
+    updatedBooks[BookToeditIndex] = {
+      ...BookToedit,
+      imageLink: BookcoverURL,
+    };
+
+    setListBookItem(updatedBooks);
+    setBookToedit(defaultProductObj);
     closeModal();
   };
 
@@ -103,8 +138,9 @@ function App() {
 
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-
+console.log(value)
     setSelectedCategory(value);
+    setBookToedit({ ...BookToedit, category: value });
   };
 
   const Recover_deleted_books = () => {
@@ -167,11 +203,15 @@ function App() {
     setConfirmdeleteItem(false);
     setMoreInfo(false);
     console.log("first");
-    setBookToedit(defaultProductObj)
+    setBookToedit(defaultProductObj);
+    setisOpenEditModel(false);
   }
 
   function openModal() {
     setIsOpen(true);
+  }
+  function openEditModal() {
+    setisOpenEditModel(true);
   }
   function openDeletedModal() {
     setIsdeletedItemopen(true);
@@ -190,13 +230,21 @@ function App() {
     if (file) {
       setBookcover(file); // Optional if you're using Bookcover elsewhere
       setBook({ ...Book, imageLink: file });
+
+      // Set the BookcoverURL state with the URL of the selected image file
+      const imageURL = URL.createObjectURL(file);
+      setBookcoverURL(imageURL);
     } else {
       setBook({ ...Book, imageLink: undefined });
+
+      // If no file is selected, reset the BookcoverURL state
+      setBookcoverURL("");
     }
   }
 
   function DeleteImg() {
     setBookcover(undefined);
+    setBookcoverURL(undefined);
   }
 
   const NextPagination = Pagination + 8;
@@ -204,8 +252,10 @@ function App() {
     (books, index) => (
       <>
         <BookCard
+          setBookcoverURL={setBookcoverURL}
+          setBookToeditIndex={setBookToeditIndex}
+          openEditModal={openEditModal}
           setBookToedit={setBookToedit}
-          openModal={openModal}
           key={books.id}
           books={books}
           OpenConfirmdeleteItem={OpenConfirmdeleteItem}
@@ -283,48 +333,94 @@ function App() {
       <Input
         type={input.type}
         name={input.name}
-        value={BookToedit["author"] }
+        value={Book[input.name]}
         id={input.id}
         onChange={onChangeHandler}
       />
     </div>
   ));
 
-const ImgLink = (
-  <div className="">
-    {!Bookcover ? (
-      <label className="flex flex-cols items-center gap-3">
-        Upload Your Img
-        <input
-          type="file"
-          id="imageLink" // Assuming "imageLink" is the correct property name in the Book object
-          value={Bookcover  } // Assuming you want to display the currently selected image, if any
-          onChange={UploadImg}
-          accept=".jpg,.png,.jpeg"
-          className="sr-only"
+  const renderBookToedit = (id: string, label: string, name: TbookName) => {
+    return (
+      <div className="flex flex-col">
+        <label htmlFor={id}>{label}</label>
+        <Input
+          type="text"
+          name={name}
+          id={id}
+          value={BookToedit[name]}
+          onChange={onChangeEditHandler}
         />
-        <div className="flex flex-col items-center">
-          <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
-            Choose Img
-          </span>
-        </div>
-      </label>
-    ) : (
-      <div className="flex flex-rows items-center gap-3">
-        <img
-          src={URL.createObjectURL(Bookcover)}
-          alt="Uploaded Cover"
-          style={{ maxWidth: "300px", maxHeight: "300px" }}
-        />
-        <Button Color="red" onClick={DeleteImg}>
-          Delete Image
-        </Button>
       </div>
-    )}
-  </div>
-);
+    );
+  };
 
+  const ImgLink = (
+    <div className="">
+      {!Bookcover ? (
+        <label className="flex flex-cols items-center gap-3">
+          Upload Your Img
+          <input
+            type="file"
+            id="imageLink" // Assuming "imageLink" is the correct property name in the Book object
+            value={BookToedit.imageLink} // Assuming you want to display the currently selected image, if any
+            onChange={UploadImg}
+            accept=".jpg,.png,.jpeg"
+            className="sr-only"
+          />
+          <div className="flex flex-col items-center">
+            <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
+              Choose Img
+            </span>
+          </div>
+        </label>
+      ) : (
+        <div className="flex flex-rows items-center gap-3">
+          <img
+            src={URL.createObjectURL(Bookcover)}
+            alt="Uploaded Cover"
+            style={{ maxWidth: "300px", maxHeight: "300px" }}
+          />
+          <Button Color="red" onClick={DeleteImg}>
+            Delete Image
+          </Button>
+        </div>
+      )}
+    </div>
+  );
 
+  const ImgLinkToedit = (
+    <div className="">
+      {!BookcoverURL ? (
+        <label className="flex flex-cols items-center gap-3">
+          Upload Your Img
+          <input
+            type="file"
+            id="imageLink"
+            onChange={UploadImg}
+            accept=".jpg,.png,.jpeg"
+            className="sr-only"
+          />
+          <div className="flex flex-col items-center">
+            <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
+              Choose Img
+            </span>
+          </div>
+        </label>
+      ) : (
+        <div className="flex flex-rows items-center gap-3">
+          <img
+            src={BookcoverURL}
+            alt="Uploaded Cover"
+            style={{ maxWidth: "300px", maxHeight: "300px" }}
+          />
+          <Button Color="red" onClick={DeleteImg}>
+            Edit
+          </Button>
+        </div>
+      )}
+    </div>
+  );
 
   const deletedBookmark = FaTrashItem.map((deletedBook) => (
     <DeletedBooks
@@ -387,6 +483,8 @@ const ImgLink = (
             </button>
           </div>
 
+          {/* Add Module */}
+
           <Modal isOpen={isOpen} closeModal={closeModal}>
             {/* <div className="flex gap-2 w-full justify-between">
               {firstTwoInputs}
@@ -406,7 +504,7 @@ const ImgLink = (
               </div>
 
               <div className="flex  gap-4 my-2 items-center">{ImgLink}</div>
-              <div>{firstTwoInputs[8]}</div>
+              {/* <div>{firstTwoInputs[8]}</div> */}
               <div className="py-2 px-3 bg-gradient-to-br from-blue-500 to-blue-300 rounded-md flex-1 text-center text-white ">
                 <label htmlFor="" className="flex gap-1  items-center ">
                   <span className="text-black font-semibold flex-1 w-[30%] ">
@@ -416,7 +514,7 @@ const ImgLink = (
                     onChange={handleCategoryChange}
                     value={BookToedit.category}
                     className="font-medium rounded-md text-black bg-blue-100 border-none outline-none w-[80%] py-1.5"
-                    name=""
+                    name='category'
                     id=""
                   >
                     {CategoryFilter}
@@ -436,6 +534,68 @@ const ImgLink = (
               </div>
             </form>
           </Modal>
+
+          {/* Edit Module */}
+          <Modal isOpen={isOpenEditModel} closeModal={closeModal}>
+            {/* <div className="flex gap-2 w-full justify-between">
+              {firstTwoInputs}
+            </div> */}
+            <form onSubmit={onSubmitEditHandler}>
+              {/* <ShowError SaveError={SaveError} /> */}
+
+              <div className="flex gap-2 justify-between">
+                {renderBookToedit("Title", "Title", "title")}
+                {renderBookToedit("Author", "Author", "author")}
+              </div>
+              <div className="flex flex-col gap-2">
+                {renderBookToedit("Link", "Link", "link")}
+              </div>
+              <div className="flex flex-col gap-2">
+                {renderBookToedit("Description", "Description", "description")}
+              </div>
+              <div className="flex flex-row gap-2">
+                {renderBookToedit("Country", "Country", "country")}
+                {renderBookToedit("Pages", "Pages", "pages")}
+                {renderBookToedit("Year", "Year", "year")}
+                {renderBookToedit("Language", "Language", "language")}
+              </div>
+
+              <div className="flex  gap-4 my-2 items-center">
+                {ImgLinkToedit}
+              </div>
+
+              <div className="py-2 px-3 bg-gradient-to-br from-blue-500 to-blue-300 rounded-md flex-1 text-center text-white ">
+                <label htmlFor="" className="flex gap-1  items-center ">
+                  <span className="text-black font-semibold flex-1 w-[30%] ">
+                    category:{" "}
+                  </span>
+                  <select
+                    onChange={handleCategoryChange}
+                    value={BookToedit.category}
+                    className="font-medium rounded-md text-black bg-blue-100 border-none outline-none w-[80%] py-1.5"
+                    name=""
+                    id=""
+                  >
+                    {CategoryFilter}
+                  </select>
+                </label>
+              </div>
+
+              <div className="mt-4 flex gap-3">
+                <Button type="submit" Color="indigo">
+                  Edit
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => closeModal()}
+                  Color="Cancel"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </Modal>
+
           <DeletedItemModal
             isdeletedItemopen={isdeletedItemopen}
             closeModal={closeModal}
