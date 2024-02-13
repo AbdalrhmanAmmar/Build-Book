@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, ReactNode, useState } from "react";
 import BookCard from "./Components/BookCard/BookCard";
 import Navbar from "./Components/Navbar/Navbar";
 import { Formdata, RenderBookList } from "./data";
@@ -18,6 +18,7 @@ import { onValidation } from "./Validation";
 import { TbookName } from "./types";
 import ShowError from "./Components/ShowError/ShowError";
 import toast, { Toaster } from "react-hot-toast";
+import { Howl } from "howler";
 
 function App() {
   //State
@@ -56,6 +57,11 @@ function App() {
   const [BookcoverURL, setBookcoverURL] = useState<string | undefined>(
     undefined
   );
+
+  const sound = new Howl({
+    src: ["Edit.mp3"], // Path to your sound file
+    volume: 0.2,
+  });
 
   //Function
 
@@ -130,6 +136,7 @@ function App() {
       duration: 10000,
       style: { borderRadius: "10px", background: "#333", color: "#fff" },
     });
+    sound.play();
   };
 
   const onDeleteHandler = (id: string) => {
@@ -341,7 +348,8 @@ function App() {
     return <ShowError SaveError={SaveError[name]} />;
   };
 
-  const errorArray: React.ReactNode[] = [];
+  const errorArray: ReactNode[] = [];
+
   const firstTwoInputs = Formdata.slice(0, 8).map((input) => {
     const formError = RenderError(input.name);
     errorArray.push(formError);
@@ -473,7 +481,7 @@ function App() {
         searchQuery={searchQuery}
         onSearchsubmit={onSearchsubmit}
       />
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
       <div className="w-[100%]">
         <div className="container mx-auto ">
           <div className="flex justify-between my-4 items-center gap-4 md:w-full ">
