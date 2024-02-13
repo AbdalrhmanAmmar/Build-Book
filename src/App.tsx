@@ -138,8 +138,14 @@ function App() {
 
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-console.log(value)
-    setSelectedCategory(value);
+    if (!value) {
+      setSelectedCategory('Fiction')
+    } else {
+      setSelectedCategory(value);
+      
+    }
+
+    
     setBookToedit({ ...BookToedit, category: value });
   };
 
