@@ -8,7 +8,6 @@ export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
     country = "",
     language = "",
 
-    link = "",
     pages = "",
 
     year = "",
@@ -32,9 +31,7 @@ export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
     errors.description = "description must be 50 characters ";
   }
 
-  if (!link) {
-    errors.link = "Title is required";
-  }
+
 
   if (imageLink === undefined || !(imageLink instanceof File)) {
     errors.imageLink = "Please Upload Image";
