@@ -5,12 +5,13 @@ interface IProps {
   isOpen: boolean;
   closeModal: () => void;
   children: ReactNode;
+  title:string
 }
 
-export default function Modal({ isOpen, closeModal, children, }: IProps) {
+export default function Modal({ isOpen, closeModal, children, title }: IProps) {
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment} >
+      <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -36,11 +37,13 @@ export default function Modal({ isOpen, closeModal, children, }: IProps) {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  {/* <ShowError SaveError={SaveError[title]} /> */}
+
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Add Your Book
+                    {title}
                   </Dialog.Title>
                   <div className="mt-4">{children}</div>
                 </Dialog.Panel>

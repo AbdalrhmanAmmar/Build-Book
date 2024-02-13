@@ -17,6 +17,7 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { onValidation } from "./Validation";
 import { TbookName } from "./types";
 import ShowError from "./Components/ShowError/ShowError";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   //State
@@ -54,17 +55,20 @@ function App() {
   const [isOpenEditModel, setisOpenEditModel] = useState(false);
   const [BookcoverURL, setBookcoverURL] = useState<string | undefined>(
     undefined
-  ); // Set initial state to undefined
+  );
 
   //Function
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBook({ ...Book, [name]: value });
+
+    setSaveError({ ...SaveError, [name]: "" });
   };
   const onChangeEditHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBookToedit({ ...BookToedit, [name]: value });
+    setSaveError({ ...SaveError, [name]: "" });
   };
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -95,7 +99,7 @@ function App() {
     setListBookItem((prev) => [newBook, ...prev]);
     setBook(defaultProductObj);
     setBookcover(undefined); // Reset Bookcover after submission
-    setSelectedCategory('Fiction')
+    setSelectedCategory("Fiction");
     closeModal();
   };
   const onSubmitEditHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -122,6 +126,10 @@ function App() {
     setListBookItem(updatedBooks);
     setBookToedit(defaultProductObj);
     closeModal();
+    toast.success("Successfully toasted!", {
+      duration: 10000,
+      style: { borderRadius: "10px", background: "#333", color: "#fff" },
+    });
   };
 
   const onDeleteHandler = (id: string) => {
@@ -139,13 +147,11 @@ function App() {
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
     if (!value) {
-      setSelectedCategory('Fiction')
+      setSelectedCategory("Fiction");
     } else {
       setSelectedCategory(value);
-      
     }
 
-    
     setBookToedit({ ...BookToedit, category: value });
   };
 
@@ -331,21 +337,42 @@ function App() {
   const CategoryFilter = RenderBookList.map((categoryBook) => (
     <Category key={categoryBook.id} categoryBook={categoryBook} />
   ));
+  const RenderError = (name: TbookName) => {
+    return <ShowError SaveError={SaveError[name]} />;
+  };
 
-  const firstTwoInputs = Formdata.slice(0, 8).map((input) => (
-    <div key={input.id}>
-      <label htmlFor={input.id}>{input.id}</label>
+  const errorArray: React.ReactNode[] = [];
+  const firstTwoInputs = Formdata.slice(0, 8).map((input) => {
+    const formError = RenderError(input.name);
+    errorArray.push(formError);
 
-      <Input
-        type={input.type}
-        name={input.name}
-        value={Book[input.name]}
-        id={input.id}
-        onChange={onChangeHandler}
-      />
-      <ShowError SaveError={SaveError[input.name]} />
-    </div>
-  ));
+    return (
+      <div key={input.id}>
+        {input.name === "link" ? (
+          <>
+            <label className="flex gap-2" htmlFor="">
+              Link of Book
+              <span className="text-red-500 font-bold">(Optional)</span>
+            </label>
+          </>
+        ) : (
+          <>
+            <div></div>
+
+            <label className="block">{input.name}</label>
+          </>
+        )}
+
+        <Input
+          type={input.type}
+          name={input.name}
+          value={Book[input.name]}
+          id={input.id}
+          onChange={onChangeHandler}
+        />
+      </div>
+    );
+  });
 
   const renderBookToedit = (id: string, label: string, name: TbookName) => {
     return (
@@ -446,6 +473,7 @@ function App() {
         searchQuery={searchQuery}
         onSearchsubmit={onSearchsubmit}
       />
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="w-[100%]">
         <div className="container mx-auto ">
           <div className="flex justify-between my-4 items-center gap-4 md:w-full ">
@@ -492,12 +520,19 @@ function App() {
 
           {/* Add Module */}
 
-          <Modal isOpen={isOpen} closeModal={closeModal}>
+          <Modal title="Add Product" isOpen={isOpen} closeModal={closeModal}>
             {/* <div className="flex gap-2 w-full justify-between">
               {firstTwoInputs}
             </div> */}
+
             <form onSubmit={onSubmitHandler}>
-              {/* <ShowError SaveError={SaveError} /> */}
+              {Object.values(SaveError).every(
+                (error) => error === ""
+              ) ? null : (
+                <div className="flex flex-col justify-between">
+                  {errorArray}
+                </div>
+              )}
 
               <div className="flex gap-2 justify-between">
                 {firstTwoInputs[0]}
@@ -544,7 +579,11 @@ function App() {
           </Modal>
 
           {/* Edit Module */}
-          <Modal isOpen={isOpenEditModel} closeModal={closeModal}>
+          <Modal
+            title="Edit Book Data"
+            isOpen={isOpenEditModel}
+            closeModal={closeModal}
+          >
             {/* <div className="flex gap-2 w-full justify-between">
               {firstTwoInputs}
             </div> */}
