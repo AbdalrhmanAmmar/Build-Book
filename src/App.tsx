@@ -363,7 +363,6 @@ console.log(value)
           <input
             type="file"
             id="imageLink" // Assuming "imageLink" is the correct property name in the Book object
-            value={Book.imageLink} // Assuming you want to display the currently selected image, if any
             onChange={UploadImg}
             accept=".jpg,.png,.jpeg"
             className="sr-only"
