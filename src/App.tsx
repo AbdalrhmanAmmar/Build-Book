@@ -82,6 +82,7 @@ function App() {
 
     const errors = onValidation(Book as Ibooks, Bookcover);
     setSaveError(errors);
+    console.log(SaveError);
 
     const hasErrorMsg = Object.values(errors).some(
       (value) => value === value && "Please Upload Image"
@@ -111,17 +112,19 @@ function App() {
   const onSubmitEditHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // const errors = onValidation(Book as Ibooks, Bookcover);
-    // setSaveError(errors);
+    // Skip image validation if image is not being updated
+    const errors = onValidation(BookToedit as Ibooks, Bookcover);
+    setSaveError(errors);
 
-    // const hasErrorMsg = Object.values(errors).some(
-    //   (value) => value === value && "Please Upload Image"
-    // );
-    // if (hasErrorMsg) {
-    //   setSaveError(errors);
-    //   return;
-    // }
-    // console.log("first");
+    const hasErrorMsg = Object.values(errors).some(
+      (value) => value === value 
+    );
+    if (hasErrorMsg) {
+      setSaveError(errors);
+      console.log(errors);
+      console.log(hasErrorMsg);
+      return;
+    }
 
     const updatedBooks = [...ListBookItem];
     updatedBooks[BookToeditIndex] = {
@@ -271,6 +274,7 @@ function App() {
     (books, index) => (
       <>
         <BookCard
+          setSaveError={setSaveError}
           setBookcoverURL={setBookcoverURL}
           setBookToeditIndex={setBookToeditIndex}
           openEditModal={openEditModal}
@@ -448,6 +452,7 @@ function App() {
               Choose Img
             </span>
           </div>
+          <ShowError SaveError={SaveError.imageLink} />
         </label>
       ) : (
         <div className="flex flex-rows items-center gap-3">
@@ -596,7 +601,13 @@ function App() {
               {firstTwoInputs}
             </div> */}
             <form onSubmit={onSubmitEditHandler}>
-              {/* <ShowError SaveError={SaveError} /> */}
+              {Object.values(SaveError).every(
+                (error) => error === ""
+              ) ? null : (
+                <div className="flex flex-col justify-between">
+                  {errorArray}
+                </div>
+              )}
 
               <div className="flex gap-2 justify-between">
                 {renderBookToedit("Title", "Title", "title")}

@@ -12,6 +12,7 @@ interface Iprops {
   setBookToedit: (books: Ibooks) => void;
   setBookToeditIndex: (index: number) => void;
   setBookcoverURL: (url: string) => void;
+  setSaveError: (error: Partial<Ibooks>) => void;
 }
 function BookCard({
   books,
@@ -22,6 +23,7 @@ function BookCard({
   openEditModal,
   setBookToeditIndex,
   setBookcoverURL,
+  setSaveError,
 }: Iprops) {
   const {
     id,
@@ -57,6 +59,8 @@ function BookCard({
     }
 
     openEditModal();
+      setSaveError({} as Partial<Ibooks>);
+
   };
 
   return (
