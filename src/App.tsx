@@ -14,9 +14,9 @@ import OndeleteConfirm from "./Components/Modal/OndeleteConfirm";
 import MoreInfodata from "./Components/Modal/MoreInfodata";
 import MoreInfoData from "./Components/MoreInfo/MoreInfo";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
-// import { onValidation } from "./Validation";
+import { onValidation } from "./Validation";
 import { TbookName } from "./types";
-// import ShowError from "./Components/ShowError/ShowError";
+import ShowError from "./Components/ShowError/ShowError";
 
 function App() {
   //State
@@ -47,8 +47,8 @@ function App() {
   const [GetIndex, setGetIndex] = useState<number>(0);
   const [Pagination, setPagination] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  // const [SaveError, setSaveError] =
-  //   useState<Partial<Ibooks>>(defaultProductObj);
+  const [SaveError, setSaveError] =
+    useState<Partial<Ibooks>>(defaultProductObj);
   const [BookToedit, setBookToedit] = useState<Ibooks>(defaultProductObj);
   const [BookToeditIndex, setBookToeditIndex] = useState<number>(0);
   const [isOpenEditModel, setisOpenEditModel] = useState(false);
@@ -70,16 +70,16 @@ function App() {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // const errors = onValidation(Book as Ibooks, Bookcover);
-    // setSaveError(errors);
+    const errors = onValidation(Book as Ibooks, Bookcover);
+    setSaveError(errors);
 
-    // const hasErrorMsg = Object.values(errors).some(
-    //   (value) => value === value && "Please Upload Image"
-    // );
-    // if (hasErrorMsg) {
-    //   setSaveError(errors);
-    //   return;
-    // }
+    const hasErrorMsg = Object.values(errors).some(
+      (value) => value === value && "Please Upload Image"
+    );
+    if (hasErrorMsg) {
+      setSaveError(errors);
+      return;
+    }
 
     const newBook: Ibooks = {
       ...Book,
@@ -343,6 +343,7 @@ function App() {
         id={input.id}
         onChange={onChangeHandler}
       />
+      <ShowError SaveError={SaveError[input.name]} />
     </div>
   ));
 
@@ -378,6 +379,7 @@ function App() {
               Choose Img
             </span>
           </div>
+          <ShowError SaveError={SaveError.imageLink} />
         </label>
       ) : (
         <div className="flex flex-rows items-center gap-3">
@@ -519,9 +521,10 @@ function App() {
                     onChange={handleCategoryChange}
                     value={BookToedit.category}
                     className="font-medium rounded-md text-black bg-blue-100 border-none outline-none w-[80%] py-1.5"
-                    name='category'
+                    name="category"
                     id=""
                   >
+                    <option value="">Choose</option>
                     {CategoryFilter}
                   </select>
                 </label>

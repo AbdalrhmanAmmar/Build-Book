@@ -13,7 +13,7 @@ export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
 
     year = "",
     description = "",
-    
+    category = "",
   } = Books;
 
   const imageLink = imageBook;
@@ -53,9 +53,10 @@ export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
   if (!language.trim() || language.length < 3 || language.length > 15) {
     errors.language = "language must be between 3 and 15 characters";
   }
-  // if (!category) {
-  //   errors.category = "Title is required";
-  // }
+  if (category) {
+    errors.category = "You Should Use Category";
+    console.log(errors.category);
+  }
 
   return errors;
 };

@@ -1,14 +1,18 @@
-
 interface Iprops {
-  SaveError: string | undefined; 
+  SaveError: string | File | undefined;
 }
 
 function ShowError({ SaveError }: Iprops) {
-  // Check if SaveError is defined
-  if (SaveError !== undefined) {
+  // Check if SaveError is defined and is a string
+  if (typeof SaveError === "string") {
     return <span className="text-red-500 font-bold ">{SaveError}</span>;
   }
-  return null; // Return null if SaveError is undefined
+
+  if (SaveError instanceof File) {
+
+    return <span className="text-blue-500 font-bold ">Invalid file type</span>;
+  }
+  return null; 
 }
 
 export default ShowError;
