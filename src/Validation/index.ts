@@ -33,10 +33,10 @@ export const onValidation = (
     errors.description = "description must be 50 characters ";
   }
 
-  if (!(imageLink instanceof File)) {
-    !errors.imageLink;
-  } else {
-    (imageLink === undefined)
+  if (
+    (imageLink instanceof File) &&
+    (imageLink === undefined && typeof imageLink !== "string")
+  ) {
     errors.imageLink = "Please Upload Img";
   }
 

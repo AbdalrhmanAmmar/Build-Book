@@ -70,13 +70,13 @@ function MoreInfoData({ bookInfo, nextBookItem, PreviousBookItem }: Iprops) {
                 published in: <span className="font-bold"> {year}</span>
               </h2>
               <div className="flex justify-between w-full my-2">
-                <h3 className="bg-blue-800 py-2 px-1 rounded-md text-white font-semibold">
+                <h3 className="bg-blue-800 py-2 px-1  rounded-md text-white font-semibold">
                   Language: {language}
                 </h3>
                 <h3 className="bg-blue-800 py-2 px-1 rounded-md text-white font-semibold">
                   Country: {country}
                 </h3>
-                <h3 className="w-fit bg-red-800  px-1 rounded-md text-white font-semibold">
+                <h3 className="w-fit bg-red-500  px-1 rounded-md text-white font-semibold">
                   Pages: {pages}
                 </h3>
               </div>
