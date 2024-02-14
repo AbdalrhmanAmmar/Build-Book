@@ -58,7 +58,11 @@ function App() {
     undefined
   );
 
-  const sound = new Howl({
+  const onAddsound = new Howl({
+    src: ["Add.mp3"], // Path to your sound file
+    volume: 0.2,
+  });
+  const onEditsound = new Howl({
     src: ["Edit.mp3"], // Path to your sound file
     volume: 0.2,
   });
@@ -108,20 +112,22 @@ function App() {
     setBookcover(undefined); // Reset Bookcover after submission
     setSelectedCategory("Fiction");
     closeModal();
+    onAddsound.play();
   };
   const onSubmitEditHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Skip image validation if image is not being updated
-    const errors = onValidation(BookToedit as Ibooks, Bookcover);
+    const errors = onValidation(BookToedit as Ibooks, BookcoverURL);
     setSaveError(errors);
 
     const hasErrorMsg = Object.values(errors).some(
-      (value) => value === value 
+      (value) => value === value && "Please Upload Image"
     );
+    console.log(BookToedit);
+    console.log(Bookcover)
+    console.log(BookToedit.imageLink);
     if (hasErrorMsg) {
       setSaveError(errors);
-      console.log(errors);
+      console.log(errors)
       console.log(hasErrorMsg);
       return;
     }
@@ -139,7 +145,7 @@ function App() {
       duration: 10000,
       style: { borderRadius: "10px", background: "#333", color: "#fff" },
     });
-    sound.play();
+    onEditsound.play();
   };
 
   const onDeleteHandler = (id: string) => {
@@ -250,16 +256,17 @@ function App() {
   function UploadImg(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      setBookcover(file); // Optional if you're using Bookcover elsewhere
-      setBook({ ...Book, imageLink: file });
+      setBookcover(file);
+      setBookToedit({ ...BookToedit, imageLink: file });
 
       // Set the BookcoverURL state with the URL of the selected image file
       const imageURL = URL.createObjectURL(file);
       setBookcoverURL(imageURL);
+    } else if (typeof BookToedit.imageLink === "string") {
+      // If editing and there's an initial value for imageLink, use it
+      setBookcoverURL(BookToedit.imageLink);
     } else {
-      setBook({ ...Book, imageLink: undefined });
-
-      // If no file is selected, reset the BookcoverURL state
+      // If no file is selected and no initial value for imageLink, reset the BookcoverURL state
       setBookcoverURL("");
     }
   }

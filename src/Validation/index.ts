@@ -1,6 +1,6 @@
 import { Ibooks } from "../Interfaces";
 
-export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
+export const onValidation = (Books: Ibooks, imageBook: string |File | undefined) => {
   // Destructure Book object properties
   const {
     author = "",
@@ -30,7 +30,7 @@ export const onValidation = (Books: Ibooks, imageBook: File | undefined) => {
     errors.description = "description must be 50 characters ";
   }
 
-  if (imageLink === undefined || !(imageLink instanceof File)) {
+  if (imageLink === undefined || (imageLink instanceof File)) {
     errors.imageLink = "Please Upload Image";
   }
 
