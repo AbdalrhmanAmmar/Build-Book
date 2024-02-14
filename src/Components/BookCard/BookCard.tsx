@@ -66,6 +66,7 @@ function BookCard({
   return (
     <>
       <div className=" w-full h-full ">
+        
         <div className="p-2 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 gap-3 md:h-full ">
           {imageLink && typeof imageLink === "string" && (
             <img

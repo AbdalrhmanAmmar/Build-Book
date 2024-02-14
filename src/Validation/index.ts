@@ -22,12 +22,12 @@ export const onValidation = (
   // Initialize errors object
   const errors: Partial<Ibooks> = {};
 
-  if (!author.trim() || author.length < 5 || author.length > 20) {
-    errors.author = "Author must be between 5 and 20 characters!";
+  if (!author.trim() || author.length <  3) {
+    errors.author = "Author must be be more Than 3 characters!";
   }
 
-  if (!title.trim() || title.length < 3 || title.length > 15) {
-    errors.title = "Title must be between 3 and 15 characters!";
+  if (!title.trim() || title.length < 3 ) {
+    errors.title = "Title must be more Than 3 characters!";
   }
   if (!description.trim() || description.length < 50) {
     errors.description = "description must be 50 characters ";

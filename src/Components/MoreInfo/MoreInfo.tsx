@@ -76,7 +76,7 @@ function MoreInfoData({ bookInfo, nextBookItem, PreviousBookItem }: Iprops) {
                 <h3 className="bg-blue-800 py-2 px-1 rounded-md text-white font-semibold">
                   Country: {country}
                 </h3>
-                <h3 className="w-fit bg-red-500  px-1 rounded-md text-white font-semibold">
+                <h3 className=" bg-blue-800 py-2  px-1 rounded-md text-white font-semibold">
                   Pages: {pages}
                 </h3>
               </div>
