@@ -66,6 +66,10 @@ function App() {
     src: ["Edit.mp3"], // Path to your sound file
     volume: 0.2,
   });
+  const ondelete = new Howl({
+    src: ["delete.mp3"], // Path to your sound file
+    volume: 0.5,
+  });
 
   //Function
 
@@ -112,10 +116,10 @@ function App() {
     setBookcover(undefined); // Reset Bookcover after submission
     setSelectedCategory("Fiction");
     closeModal();
-      toast.success("Successfully Added!", {
-        duration: 3000,
-        style: { borderRadius: "10px", background: "#333", color: "#fff" },
-      });
+    toast.success("Successfully Added!", {
+      duration: 3000,
+      style: { borderRadius: "10px", background: "#333", color: "#fff" },
+    });
     onAddsound.play();
   };
   const onSubmitEditHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -127,11 +131,11 @@ function App() {
       (value) => value === value && "Please Upload Image"
     );
     console.log(BookToedit);
-    console.log(Bookcover)
+    console.log(Bookcover);
     console.log(BookToedit.imageLink);
     if (hasErrorMsg) {
       setSaveError(errors);
-      console.log(errors)
+      console.log(errors);
       console.log(hasErrorMsg);
       return;
     }
@@ -158,6 +162,11 @@ function App() {
     setDeleteCounter((prevCounter) => prevCounter + 1);
     ShowdeletedItem(id);
     closeModal();
+    toast.success("Successfully deleted!", {
+      duration: 3000,
+      style: { borderRadius: "10px", background: "#333", color: "#fff" },
+    });
+    ondelete.play();
   };
   const ShowdeletedItem = (id: string) => {
     const filteredBook = ListBookItem.filter((book) => book.id === id);
@@ -179,6 +188,11 @@ function App() {
     setDeleteCounter(0);
     setListBookItem((prev) => [...FaTrashItem, ...prev]);
     setFaTrashItem([]);
+        toast.success("Successfully Recover All Item!", {
+          duration: 3000,
+          style: { borderRadius: "10px", background: "#333", color: "#fff" },
+        });
+    onAddsound.play()
   };
   const Retrieve_this_item = (id: string) => {
     const FilterFaTrashItem = FaTrashItem.filter((item) => item.id !== id);
@@ -186,6 +200,13 @@ function App() {
     setFaTrashItem(FilterFaTrashItem);
     setListBookItem((prev) => [...FilterFaTrashItemBack, ...prev]);
     setDeleteCounter((prevCounter) => prevCounter - 1);
+
+ toast.success(`Successfully Recover`, {
+   duration: 3000,
+   style: { borderRadius: "10px", background: "#333", color: "#fff" },
+ });
+ onAddsound.play();
+
   };
 
   const nextBookItem = () => {
@@ -474,7 +495,6 @@ function App() {
           />
 
           <label className="flex flex-cols items-center gap-3">
-            
             <input
               type="file"
               id="imageLink"
