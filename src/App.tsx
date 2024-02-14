@@ -112,6 +112,10 @@ function App() {
     setBookcover(undefined); // Reset Bookcover after submission
     setSelectedCategory("Fiction");
     closeModal();
+      toast.success("Successfully Added!", {
+        duration: 3000,
+        style: { borderRadius: "10px", background: "#333", color: "#fff" },
+      });
     onAddsound.play();
   };
   const onSubmitEditHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -141,8 +145,8 @@ function App() {
     setListBookItem(updatedBooks);
     setBookToedit(defaultProductObj);
     closeModal();
-    toast.success("Successfully toasted!", {
-      duration: 10000,
+    toast.success("Successfully edited!", {
+      duration: 3000,
       style: { borderRadius: "10px", background: "#333", color: "#fff" },
     });
     onEditsound.play();
