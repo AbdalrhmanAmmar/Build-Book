@@ -472,9 +472,22 @@ function App() {
             alt="Uploaded Cover"
             style={{ maxWidth: "300px", maxHeight: "300px" }}
           />
-          <Button Color="red" onClick={DeleteImg}>
-            Edit
-          </Button>
+
+          <label className="flex flex-cols items-center gap-3">
+            
+            <input
+              type="file"
+              id="imageLink"
+              onChange={UploadImg}
+              accept=".jpg,.png,.jpeg"
+              className="sr-only"
+            />
+            <div className="flex flex-col items-center">
+              <span className="bg-blue-600 py-2 px-3 rounded-md text-white block">
+                Edit
+              </span>
+            </div>
+          </label>
         </div>
       )}
     </div>

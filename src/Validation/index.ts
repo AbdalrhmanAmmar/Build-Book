@@ -36,7 +36,7 @@ export const onValidation = (
   if (!(imageLink instanceof File)) {
     !errors.imageLink;
   } else {
-    imageLink === undefined;
+    (imageLink === undefined)
     errors.imageLink = "Please Upload Img";
   }
 
